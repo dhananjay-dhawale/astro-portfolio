@@ -1,7 +1,7 @@
 export default function Hero() {
   return (
     <section
-      className="min-h-[70vh] flex flex-col justify-center items-center text-center px-4 bg-gradient-to-b from-black via-slate-900 to-black pt-8 pb-8"
+      className="min-h-[50vh] sm:min-h-[70vh] flex flex-col justify-center items-center text-center px-4 bg-gradient-to-b from-black via-slate-900 to-black pt-4 pb-4 sm:pt-8 sm:pb-8"
       id="hero"
     >
       <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-xl max-w-2xl w-full border border-white/10">
