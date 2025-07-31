@@ -8,59 +8,31 @@ export default function Hero() {
       className="min-h-0 sm:min-h-[70vh] flex flex-col justify-center items-center text-center px-4 bg-gradient-to-b from-black via-slate-900 to-black pt-2 pb-2 sm:pt-8 sm:pb-8 relative overflow-hidden"
       id="hero"
     >
-      <div // Changed from motion.div
+      <div
         className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-xl max-w-2xl w-full border border-white/10"
-        // Temporarily remove initial/animate/transition
-        // initial={{ opacity: 0, y: 50, scale: 0.9 }}
-        // animate={{ opacity: 1, y: 0, scale: 1 }}
-        // transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <h2 // Changed from motion.h2
+        <h2 
           className="text-4xl sm:text-6xl font-bold text-sky-400 mb-4 drop-shadow-md leading-tight"
         >
-          <span // Changed from motion.span
-            // Temporarily remove variants and overflow-hidden
-            // variants={textRevealVariants}
-            // initial="hidden"
-            // animate="visible"
-            // transition={{ delay: 0.2 }}
-            // className="inline-block overflow-hidden"
+          <span
           >
             Hi, I'm
           </span>
           {' '}
-          <span // Changed from motion.span
-            // Temporarily remove initial/animate/transition
-            // initial={{ opacity: 0, y: 20 }}
-            // animate={{ opacity: 1, y: 0 }}
-            // transition={{ delay: 0.8, duration: 0.5, ease: "easeOut" }}
+          <span
           >
             Dhananjay
           </span>
-          <span // Changed from motion.span
+          <span 
             className="inline-block ml-2 text-6xl sm:text-7xl md:text-8xl"
-            // Temporarily remove initial/animate/transition
-            // initial={{ rotate: 0, opacity: 0 }}
-            // animate={{ rotate: [0, 30, -10, 0], opacity: 1 }}
-            // transition={{
-            //   delay: 1.2,
-            //   duration: 1,
-            //   type: "tween",
-            //   ease: "easeInOut"
-            // }}
           >
             👋
           </span>
         </h2>
 
-        <p // Changed from motion.p
+        <p 
           className="text-lg sm:text-xl text-white/80 leading-relaxed"
-          // Temporarily remove variants
-          // variants={containerVariants}
-          // initial="hidden"
-          // animate="show"
         >
-          {/* Change motion.span to span */}
           <span>I'm a </span>
           <span className="text-sky-300 font-medium">software developer</span>
           <span> specializing in </span>
@@ -72,7 +44,7 @@ export default function Hero() {
           <span> — with a love for competitive programming and building clean web experiences.</span>
         </p>
 
-        {/* Temporarily remove motion.div around the button */}
+    
         <div className="mt-8">
           <a
             href="#projects"
