@@ -1,5 +1,5 @@
-
 ---
+import StarBackground from '../components/StarBackground.tsx';
 import Header from '../components/Header.tsx';
 import Hero from '../components/Hero.tsx';
 import About from '../components/About.tsx';
@@ -15,6 +15,7 @@ import Footer from '../components/Footer.tsx';
     <title>dhananjay | developer</title>
   </head>
   <body class="bg-black text-white font-sans">
+    <StarBackground client:load />
     <Header />
     <main class="max-w-6xl mx-auto px-4">
       <Hero />
