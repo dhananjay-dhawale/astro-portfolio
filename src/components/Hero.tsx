@@ -20,8 +20,8 @@ const containerVariants: Variants = {
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.03,
-      delayChildren: 0.8,
+      staggerChildren: 0.03, // Controls the delay between each child's animation
+      delayChildren: 0.8,    // Delay before the first child starts animating (after its parent starts)
     },
   },
 };
@@ -46,7 +46,7 @@ export default function Hero() {
       id="hero"
     >
       <motion.div
-        className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-xl max-w-2xl w-full border border-white/10"
+        // className="bg-white/0 backdrop-blur-md p-8 rounded-2xl shadow-xl max-w-2xl w-full border border-white/10"
         initial={{ opacity: 0, y: 50, scale: 0.9 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -82,12 +82,11 @@ export default function Hero() {
           <motion.span variants={itemVariants}> — with a love for competitive programming and building clean web experiences.</motion.span>
         </motion.p>
 
-        {/* NEW: Animate the button's wrapper div */}
         <motion.div
           className="mt-8"
-          initial={{ opacity: 0, y: 20 }} // Start invisible, slightly below
-          animate={{ opacity: 1, y: 0 }}   // Fade in, slide up to position
-          transition={{ delay: 2.5, duration: 0.5 }} // Delay it after paragraph finishes, 0.5s animation
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.0, duration: 0.5 }} // <<< REDUCED DELAY to 2.0s
         >
           <a
             href="#projects"

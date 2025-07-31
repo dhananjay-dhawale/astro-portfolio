@@ -1,8 +1,8 @@
 // src/components/Projects.tsx
 export default function Projects() {
   return (
-    <section id="projects" className="py-20 px-6 bg-black text-white max-w-5xl mx-auto">
-      <h2 className="text-3xl font-bold mb-6 text-sky-400 text-center">projects</h2>
+    <section id="projects" className="py-20 px-6 text-white max-w-5xl mx-auto">
+      <h2 className="text-3xl font-bold mb-6 text-sky-400 text-center">Projects</h2>
       <div className="flex flex-wrap justify-center gap-6">
         <div className="bg-white/10 p-6 rounded-xl backdrop-blur max-w-xs w-full">
           <h3 className="text-xl font-semibold mb-2 text-white">github readme</h3>
