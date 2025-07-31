@@ -1,36 +1,50 @@
-// src/components/Hero.tsx
 import React from 'react';
-// import { motion, type Variants } from 'framer-motion'; // Temporarily comment out Framer Motion import
+import { motion, type Variants } from 'framer-motion';
+
+// --- FRAMER MOTION VARIANTS (DEFINE HERE) ---
+const textRevealVariants: Variants = { // <<< NEW: Define textRevealVariants here
+  hidden: { opacity: 0, y: 50, clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0% 100%)' },
+  visible: {
+    opacity: 1,
+    y: 0,
+    clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0% 100%)',
+    transition: {
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+};
+// (containerVariants and itemVariants will be added in a later step)
 
 export default function Hero() {
   return (
     <section
-      className="min-h-0 sm:min-h-[70vh] flex flex-col justify-center items-center text-center px-4 bg-gradient-to-b from-black via-slate-900 to-black pt-2 pb-2 sm:pt-8 sm:pb-8 relative overflow-hidden"
+      className="min-h-0 sm:min-h-[70vh] flex flex-col justify-center items-center text-center px-4 pt-2 pb-2 sm:pt-8 sm:pb-8 relative overflow-hidden"
       id="hero"
     >
-      <div
+      <motion.div
         className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-xl max-w-2xl w-full border border-white/10"
+        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <h2 
+<h2
           className="text-4xl sm:text-6xl font-bold text-sky-400 mb-4 drop-shadow-md leading-tight"
         >
-          <span
+          {/* NEW: Wrap the entire h2 content in one motion.span */}
+          <motion.span
+            variants={textRevealVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.2 }}
+            className="inline-block overflow-hidden" // Still essential for clipPath
           >
-            Hi, I'm
-          </span>
-          {' '}
-          <span
-          >
-            Dhananjay
-          </span>
-          <span 
-            className="inline-block ml-2 text-6xl sm:text-7xl md:text-8xl"
-          >
-            👋
-          </span>
+            Hi, I'm Dhananjay 👋
+          </motion.span>
         </h2>
 
-        <p 
+
+        <p
           className="text-lg sm:text-xl text-white/80 leading-relaxed"
         >
           <span>I'm a </span>
@@ -44,7 +58,7 @@ export default function Hero() {
           <span> — with a love for competitive programming and building clean web experiences.</span>
         </p>
 
-    
+
         <div className="mt-8">
           <a
             href="#projects"
@@ -57,7 +71,7 @@ export default function Hero() {
             </svg>
           </a>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

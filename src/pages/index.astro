@@ -18,7 +18,7 @@ import Footer from '../components/Footer.tsx';
     <StarBackground client:load />
     <Header />
     <main class="max-w-6xl mx-auto px-4">
-      <Hero />
+      <Hero client:load /> {/* <--- Make sure this is still here! */}
       <About />
       <Projects />
       <Contact />
