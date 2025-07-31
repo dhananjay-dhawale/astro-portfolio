@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion, type Variants } from 'framer-motion';
 
-// --- FRAMER MOTION VARIANTS (DEFINE HERE) ---
-const textRevealVariants: Variants = { // <<< NEW: Define textRevealVariants here
+// --- FRAMER MOTION VARIANTS (unchanged) ---
+const textRevealVariants: Variants = {
   hidden: { opacity: 0, y: 50, clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0% 100%)' },
   visible: {
     opacity: 1,
@@ -14,7 +14,30 @@ const textRevealVariants: Variants = { // <<< NEW: Define textRevealVariants her
     },
   },
 };
-// (containerVariants and itemVariants will be added in a later step)
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.03,
+      delayChildren: 0.8,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 15,
+    },
+  },
+};
 
 export default function Hero() {
   return (
@@ -28,38 +51,44 @@ export default function Hero() {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-<h2
+        <h2
           className="text-4xl sm:text-6xl font-bold text-sky-400 mb-4 drop-shadow-md leading-tight"
         >
-          {/* NEW: Wrap the entire h2 content in one motion.span */}
           <motion.span
             variants={textRevealVariants}
             initial="hidden"
             animate="visible"
             transition={{ delay: 0.2 }}
-            className="inline-block overflow-hidden" // Still essential for clipPath
+            className="inline-block overflow-hidden"
           >
             Hi, I'm Dhananjay 👋
           </motion.span>
         </h2>
 
-
-        <p
+        <motion.p
           className="text-lg sm:text-xl text-white/80 leading-relaxed"
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
         >
-          <span>I'm a </span>
-          <span className="text-sky-300 font-medium">software developer</span>
-          <span> specializing in </span>
-          <span className="text-sky-300 font-medium">java</span>
-          <span>,{' '}</span>
-          <span className="text-sky-300 font-medium">spring boot</span>
-          <span>, and{' '}</span>
-          <span className="text-sky-300 font-medium">angular</span>
-          <span> — with a love for competitive programming and building clean web experiences.</span>
-        </p>
+          <motion.span variants={itemVariants}>I'm a </motion.span>
+          <motion.span variants={itemVariants} className="text-sky-300 font-medium">software developer</motion.span>
+          <motion.span variants={itemVariants}> specializing in </motion.span>
+          <motion.span variants={itemVariants} className="text-sky-300 font-medium">java</motion.span>
+          <motion.span variants={itemVariants}>,{' '}</motion.span>
+          <motion.span variants={itemVariants} className="text-sky-300 font-medium">spring boot</motion.span>
+          <motion.span variants={itemVariants}>, and{' '}</motion.span>
+          <motion.span variants={itemVariants} className="text-sky-300 font-medium">angular</motion.span>
+          <motion.span variants={itemVariants}> — with a love for competitive programming and building clean web experiences.</motion.span>
+        </motion.p>
 
-
-        <div className="mt-8">
+        {/* NEW: Animate the button's wrapper div */}
+        <motion.div
+          className="mt-8"
+          initial={{ opacity: 0, y: 20 }} // Start invisible, slightly below
+          animate={{ opacity: 1, y: 0 }}   // Fade in, slide up to position
+          transition={{ delay: 2.5, duration: 0.5 }} // Delay it after paragraph finishes, 0.5s animation
+        >
           <a
             href="#projects"
             className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full shadow-lg text-black bg-sky-400 hover:bg-sky-300 transform hover:scale-105 transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-black"
@@ -70,7 +99,7 @@ export default function Hero() {
               <path fillRule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
             </svg>
           </a>
-        </div>
+        </motion.div>
       </motion.div>
     </section>
   );
