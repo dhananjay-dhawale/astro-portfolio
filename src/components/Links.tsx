@@ -1,4 +1,3 @@
-// src/components/Links.tsx
 const links = [
   { name: 'LinkedIn', url: 'https://www.linkedin.com/in/dhananjay-dhawale-829659198/' },
   { name: 'Twitter', url: 'https://twitter.com/nonchalantnerdd' },
@@ -21,7 +20,7 @@ const links = [
 export default function Links() {
   return (
     <section className="py-10 px-6 text-white max-w-3xl mx-auto text-center">
-      <h2 className="text-3xl font-bold mb-6 text-sky-400">Find me Online</h2>
+      <h2 className="text-3xl font-bold mb-6 text-purple-300 drop-shadow-[0_2px_6px_rgba(186,147,255,0.4)]">Find Me Online</h2>
       <div className="flex flex-wrap justify-center gap-4">
         {links.map(link => (
           <a
@@ -29,7 +28,7 @@ export default function Links() {
             href={link.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-4 py-2 rounded-full bg-white/10 hover:bg-sky-400 hover:text-black transition text-sm font-medium border border-white/20"
+            className="inline-block px-4 py-2 rounded-full bg-white/10 hover:bg-purple-300 hover:text-black transition text-sm font-medium border border-white/20"
           >
             {link.name}
           </a>
@@ -38,3 +37,4 @@ export default function Links() {
     </section>
   );
 }
+
