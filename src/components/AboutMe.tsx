@@ -1,6 +1,9 @@
 export default function AboutMe() {
   return (
-    <section id="about" className="py-6 sm:py-10 px-6 text-white max-w-3xl mx-auto text-center">
+    <section
+      id="about"
+      className="py-16 px-6 text-white max-w-3xl mx-auto text-center relative z-10"
+    >
       <h2 className="text-3xl font-bold mb-6 text-purple-300 drop-shadow-[0_2px_6px_rgba(186,147,255,0.4)]">
         About Me
       </h2>

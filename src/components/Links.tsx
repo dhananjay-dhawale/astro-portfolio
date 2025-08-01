@@ -19,7 +19,7 @@ const links = [
 
 export default function Links() {
   return (
-    <section className="py-10 px-6 text-white max-w-3xl mx-auto text-center">
+    <section className="py-20 px-6 text-white max-w-4xl mx-auto text-center relative z-10">
       <h2 className="text-3xl font-bold mb-6 text-purple-300 drop-shadow-[0_2px_6px_rgba(186,147,255,0.4)]">Find Me Online</h2>
       <div className="flex flex-wrap justify-center gap-4">
         {links.map(link => (
@@ -37,4 +37,3 @@ export default function Links() {
     </section>
   );
 }
-
