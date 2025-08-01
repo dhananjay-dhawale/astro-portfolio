@@ -1,8 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import MyProjects from '../components/MyProjects.tsx';
+import StarBackground from '../components/StarBackground.tsx';
 ---
 
 <BaseLayout>
-  <MyProjects />
+  <div class="flex-1 flex flex-col justify-center items-center">
+    <StarBackground client:load />
+    <MyProjects client:load />
+  </div>
 </BaseLayout>

@@ -3,10 +3,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import AboutMe from '../components/AboutMe.tsx';
 import Contact from '../components/Contact.tsx';
 import Links from '../components/Links.tsx';
+import StarBackground from '../components/StarBackground.tsx';
 ---
 
 <BaseLayout>
-  <AboutMe />
-  <Contact />
-  <Links />
+  <div class="flex-1 flex flex-col justify-center items-center">
+    <StarBackground client:load />
+    <AboutMe client:load />
+    <Contact client:load />
+    <Links client:load />
+  </div>
 </BaseLayout>
