@@ -4,7 +4,7 @@ import react from '@astrojs/react';
 
 export default defineConfig({
   site: 'https://dhananjay-dhawale.github.io',
-  base: '/astro-portfolio',
+  base: '/astro-portfolio/',
   integrations: [
     react(),     // 👈 this enables rendering `.tsx` components
     tailwind(),
