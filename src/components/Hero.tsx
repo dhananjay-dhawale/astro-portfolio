@@ -41,7 +41,7 @@ const itemVariants: Variants = {
 export default function Hero() {
   return (
     <section
-      className="min-h-0 sm:min-h-[70vh] flex flex-col justify-center items-center text-center px-4 pt-28 pb-12 sm:pt-32 sm:pb-16 relative overflow-hidden"
+      className="flex flex-col items-center text-center px-4 py-8 relative"
       id="hero"
     >
       <motion.div

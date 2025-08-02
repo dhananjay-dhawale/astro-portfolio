@@ -5,8 +5,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout>
-  <div class="flex-1 flex flex-col justify-center items-center">
-    <StarBackground client:load />
+  <StarBackground client:load />
+  <div class="min-h-[calc(100vh-140px)] flex items-center justify-center">
     <Hero client:load />
   </div>
 </BaseLayout>

@@ -1,4 +1,3 @@
-// src/components/Header.tsx
 export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-black/70 backdrop-blur text-white px-6 py-4 flex justify-center items-center">
