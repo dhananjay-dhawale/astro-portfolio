@@ -5,21 +5,21 @@ import { FaGithub } from 'react-icons/fa';
 // Placeholder data for projects
 const projects = [
   {
-    title: 'Project Alpha',
-    description: 'This is a description of project alpha. It is a fantastic project that solves a real-world problem with cutting-edge technology. It demonstrates my skills in multiple areas.',
-    technologies: ['Java', 'Spring Boot', 'React', 'MongoDB'],
+    title: 'First Portfolio',
+    description: 'We all have watched angela yu web dev bootcamp, havent we? this is my first portfolio built using her course.',
+    technologies: ['Html', 'Css', 'Js'],
+    githubLink: 'https://dhananjay-dhawale.github.io/Portfolio/',
+    demoLink: '#'
+  },
+  {
+    title: 'Chess Heat Map',
+    description: 'Personal project which i have been trying to build for a long time, hopefully it will be done soon.',
+    technologies: ['Java', 'Spring Boot', 'Angular'],
     githubLink: '#',
     demoLink: '#'
   },
   {
-    title: 'Project Beta',
-    description: 'A brief overview of project beta, showcasing its key features and my contributions. It was built to handle data processing and visualization efficiently.',
-    technologies: ['Python', 'Pandas', 'Matplotlib', 'Flask'],
-    githubLink: '#',
-    demoLink: '#'
-  },
-  {
-    title: 'Project Gamma',
+    title: 'Project Find Me a GF',
     description: 'Project gamma is an e-commerce platform developed with a focus on user experience and performance. It includes features like a shopping cart and a secure payment gateway.',
     technologies: ['TypeScript', 'Node.js', 'Express', 'PostgreSQL'],
     githubLink: '#',
@@ -51,12 +51,31 @@ const itemVariants: Variants = {
   },
 };
 
+// Text reveal animation for the headline
+const textRevealVariants: Variants = {
+  hidden: { opacity: 0, y: 50, clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0% 100%)' },
+  visible: {
+    opacity: 1,
+    y: 0,
+    clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0% 100%)',
+    transition: {
+      duration: 1.2,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+};
+
 export default function MyProjects() {
   return (
     <section id="projects" className="py-20 px-6 text-white max-w-6xl mx-auto">
-      <h2 className="text-4xl sm:text-5xl font-bold mb-12 text-purple-300 text-center drop-shadow-[0_2px_6px_rgba(186,147,255,0.4)]">
+      <motion.h2
+        className="text-4xl sm:text-5xl font-bold mb-12 text-purple-300 text-center drop-shadow-[0_2px_6px_rgba(186,147,255,0.4)] overflow-hidden"
+        variants={textRevealVariants}
+        initial="hidden"
+        animate="visible"
+      >
         My Projects
-      </h2>
+      </motion.h2>
       <motion.div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         variants={containerVariants}
