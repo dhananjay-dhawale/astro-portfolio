@@ -63,22 +63,22 @@ export default function Hero() {
           </motion.span>
         </h2>
 
-        <motion.p
-          className="text-lg sm:text-xl text-gray-200 leading-relaxed drop-shadow-[0_1px_4px_rgba(255,255,255,0.15)]"
-          variants={containerVariants}
-          initial="hidden"
-          animate="show"
-        >
-          <motion.span variants={itemVariants}>I'm a </motion.span>
-          <motion.span variants={itemVariants} className="text-purple-200 font-medium">software developer</motion.span>
-          <motion.span variants={itemVariants}> specializing in </motion.span>
-          <motion.span variants={itemVariants} className="text-purple-200 font-medium">java</motion.span>
-          <motion.span variants={itemVariants}>,{' '}</motion.span>
-          <motion.span variants={itemVariants} className="text-purple-200 font-medium">spring boot</motion.span>
-          <motion.span variants={itemVariants}>, and{' '}</motion.span>
-          <motion.span variants={itemVariants} className="text-purple-200 font-medium">angular</motion.span>
-          <motion.span variants={itemVariants}> — with a love for competitive programming and building clean web experiences.</motion.span>
-        </motion.p>
+<motion.p
+  className="text-lg sm:text-xl text-gray-200 leading-relaxed drop-shadow-[0_1px_4px_rgba(255,255,255,0.15)]"
+  variants={containerVariants}
+  initial="hidden"
+  animate="show"
+>
+  <motion.span variants={itemVariants}>I build clean, high-performance applications with </motion.span>
+  <motion.span variants={itemVariants} className="text-purple-200 font-medium">Java</motion.span>
+  <motion.span variants={itemVariants}>, </motion.span>
+  <motion.span variants={itemVariants} className="text-purple-200 font-medium">Spring Boot</motion.span>
+  <motion.span variants={itemVariants}>, and </motion.span>
+  <motion.span variants={itemVariants} className="text-purple-200 font-medium">Angular</motion.span>
+  <motion.span variants={itemVariants}>. My drive to solve complex problems began with </motion.span>
+  <motion.span variants={itemVariants} className="text-purple-200 font-medium">competitive programming</motion.span>
+  <motion.span variants={itemVariants}>, a passion that now fuels every line of code I write.</motion.span>
+</motion.p>
 
         <motion.div
           className="mt-8"
