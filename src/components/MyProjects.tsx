@@ -8,8 +8,8 @@ const projects = [
     title: 'First Portfolio',
     description: 'We all have watched angela yu web dev bootcamp, havent we? this is my first portfolio built using her course.',
     technologies: ['Html', 'Css', 'Js'],
-    githubLink: 'https://dhananjay-dhawale.github.io/Portfolio/',
-    demoLink: '#'
+    githubLink: 'https://github.com/dhananjay-dhawale/Portfolio',
+    demoLink: 'https://dhananjay-dhawale.github.io/Portfolio/'
   },
   {
     title: 'Chess Heat Map',
