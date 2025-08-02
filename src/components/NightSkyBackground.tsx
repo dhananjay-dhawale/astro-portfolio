@@ -66,15 +66,15 @@ export default function NightSkyBackground({ className = '' }: NightSkyBackgroun
       scene.add(stars);
     };
 
+    // Inside NightSkyBackground.tsx, in the useEffect hook
     // Create shooting meteors using simple geometry
     const createMeteors = () => {
       const meteors = new THREE.Group();
-      const meteorCount = isMobile ? 2 : 4;
-
+      const meteorCount = isMobile ? 5 : 10;
+      
       for (let i = 0; i < meteorCount; i++) {
-        // Create meteor trail using a line
         const trailGeometry = new THREE.BufferGeometry();
-        const trailPositions = new Float32Array(6); // 2 points, 3 coordinates each
+        const trailPositions = new Float32Array(6);
         trailGeometry.setAttribute('position', new THREE.BufferAttribute(trailPositions, 3));
         
         const trailMaterial = new THREE.LineBasicMaterial({
@@ -85,14 +85,12 @@ export default function NightSkyBackground({ className = '' }: NightSkyBackgroun
         
         const meteorTrail = new THREE.Line(trailGeometry, trailMaterial);
         
-        // Random starting position
+        // --- START OF FIX ---
         const startX = (Math.random() - 0.5) * 1000;
-        const startY = Math.random() * 500 + 200;
+        const startY = Math.random() * 200 + 300; // Force meteors to start high up
         const startZ = (Math.random() - 0.5) * 1000;
         
         meteorTrail.position.set(startX, startY, startZ);
-        
-        // Store meteor data
         (meteorTrail as any).velocity = new THREE.Vector3(
           (Math.random() - 0.5) * 4,
           -Math.random() * 6 - 2,
