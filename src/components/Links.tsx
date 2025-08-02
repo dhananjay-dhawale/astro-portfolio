@@ -39,13 +39,15 @@ const categories = [
 
 export default function Links() {
   return (
-    <section className="py-20 px-6 text-white max-w-4xl mx-auto text-center relative z-10">
-      <h2 className="text-3xl font-bold mb-6 text-purple-300 drop-shadow-[0_2px_6px_rgba(186,147,255,0.4)]">Find Me Online</h2>
+    <div className="space-y-8">
+      <h2 className="text-3xl font-semibold text-purple-300 drop-shadow-[0_2px_4px_rgba(186,147,255,0.2)]">
+        Find Me Online
+      </h2>
       <div className="flex flex-col gap-8">
         {categories.map(category => (
           <div key={category.title}>
-            <h3 className="text-2xl font-semibold mb-4 text-purple-200">{category.title}</h3>
-            <div className="flex flex-wrap justify-center gap-4">
+            <h3 className="text-xl font-semibold mb-4 text-purple-200">{category.title}</h3>
+            <div className="flex flex-wrap gap-4">
               {category.links.map(link => (
                 <a
                   key={link.name}
@@ -62,6 +64,6 @@ export default function Links() {
           </div>
         ))}
       </div>
-    </section>
+    </div>
   );
 }

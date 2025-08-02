@@ -1,58 +1,82 @@
-export default function Contact() {
+import React from 'react';
+import Links from './Links';
+
+export default function Connect() {
   const resumeUrl = `${import.meta.env.BASE_URL}resume.pdf`;
 
   return (
-    <section id="contact" className="py-12 px-6 text-white max-w-3xl mx-auto text-center">
-      <h2 className="text-3xl font-bold text-purple-300 mb-6">Contact Me</h2>
+    <section id="connect" className="py-16 px-6 text-white max-w-6xl mx-auto">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl sm:text-5xl font-bold text-purple-300 drop-shadow-[0_2px_6px_rgba(186,147,255,0.4)] mb-4">
+          Let's Connect
+        </h1>
+        <p className="text-xl text-white/80">
+          Feel free to reach out, or connect with me on any of my profiles below.
+        </p>
+      </div>
 
-      <p className="text-white/80 mb-8">
-        Feel free to reach out if you'd like to collaborate, ask a question, or just say hello.
-      </p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+        {/* Left Column: Links */}
+        <div>
+          <Links />
+        </div>
 
-      <form
-        action="https://formspree.io/f/xqaldqlj"
-        method="POST"
-        className="space-y-4 max-w-xl mx-auto text-black"
-      >
-        <input
-          type="email"
-          name="email"
-          placeholder="your email"
-          required
-          className="w-full p-3 rounded-lg bg-white/90 outline-none"
-        />
-        <textarea
-          name="message"
-          placeholder="your message"
-          required
-          rows={5}
-          className="w-full p-3 rounded-lg bg-white/90 outline-none"
-        />
-        <button
-          type="submit"
-          className="bg-purple-500 hover:bg-purple-400 text-white font-semibold px-6 py-2 rounded-full transition-all"
-        >
-          Send Message
-        </button>
-      </form>
+        {/* Right Column: Contact Form & Resume */}
+        <div className="space-y-12">
+          {/* Get In Touch Form */}
+          <div>
+            <h2 className="text-3xl font-semibold text-purple-300 mb-6 drop-shadow-[0_2px_4px_rgba(186,147,255,0.2)]">
+              Get In Touch
+            </h2>
+            <form
+              action="https://formspree.io/f/xqaldqlj"
+              method="POST"
+              className="space-y-4 text-black"
+            >
+              <input
+                type="email"
+                name="email"
+                placeholder="Your Email"
+                required
+                className="w-full p-3 rounded-lg bg-white/90 outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+              />
+              <textarea
+                name="message"
+                placeholder="Your Message"
+                required
+                rows={5}
+                className="w-full p-3 rounded-lg bg-white/90 outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+              />
+              <button
+                type="submit"
+                className="bg-purple-500 hover:bg-purple-400 text-white font-semibold px-6 py-2 rounded-full transition-all flex items-center justify-center gap-2"
+              >
+                Send Message
+                <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                </svg>
+              </button>
+            </form>
+          </div>
 
-      <div className="mt-12">
-        <h3 className="text-2xl font-semibold text-purple-300 mb-4">Resume</h3>
-        <a
-          href={resumeUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block px-6 py-2 bg-purple-500 hover:bg-purple-400 text-white rounded-full mb-6 transition-all"
-        >
-          view resume
-        </a>
-
-        <div className="w-full h-[70vh] border rounded-xl overflow-hidden shadow-lg">
-          <iframe
-            src={resumeUrl}
-            className="w-full h-full"
-            title="resume"
-          />
+          {/* View My Resume */}
+          <div>
+            <h2 className="text-3xl font-semibold text-purple-300 mb-6 drop-shadow-[0_2px_4px_rgba(186,147,255,0.2)]">
+              View My Resume
+            </h2>
+            <a
+              href={resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-purple-500 hover:bg-purple-400 text-white font-semibold rounded-full transition-all shadow-lg"
+            >
+              Download Resume
+              <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 11.586V4a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
     </section>

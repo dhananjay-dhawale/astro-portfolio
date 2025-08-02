@@ -1,8 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import AboutMe from '../components/AboutMe.tsx';
 import Contact from '../components/Contact.tsx';
-import Links from '../components/Links.tsx';
 import StarBackground from '../components/StarBackground.tsx';
 ---
 
@@ -11,7 +9,6 @@ import StarBackground from '../components/StarBackground.tsx';
     <StarBackground client:load />
     <div class="relative z-10">
       <Contact client:load />
-      <Links client:load />
     </div>
   </div>
 </BaseLayout>
