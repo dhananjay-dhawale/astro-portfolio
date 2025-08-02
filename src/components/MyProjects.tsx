@@ -1,21 +1,108 @@
+import React from 'react';
+import { motion, type Variants } from 'framer-motion';
+import { FaGithub } from 'react-icons/fa';
+
+// Placeholder data for projects
+const projects = [
+  {
+    title: 'Project Alpha',
+    description: 'This is a description of project alpha. It is a fantastic project that solves a real-world problem with cutting-edge technology. It demonstrates my skills in multiple areas.',
+    technologies: ['Java', 'Spring Boot', 'React', 'MongoDB'],
+    githubLink: '#',
+    demoLink: '#'
+  },
+  {
+    title: 'Project Beta',
+    description: 'A brief overview of project beta, showcasing its key features and my contributions. It was built to handle data processing and visualization efficiently.',
+    technologies: ['Python', 'Pandas', 'Matplotlib', 'Flask'],
+    githubLink: '#',
+    demoLink: '#'
+  },
+  {
+    title: 'Project Gamma',
+    description: 'Project gamma is an e-commerce platform developed with a focus on user experience and performance. It includes features like a shopping cart and a secure payment gateway.',
+    technologies: ['TypeScript', 'Node.js', 'Express', 'PostgreSQL'],
+    githubLink: '#',
+    demoLink: '#'
+  }
+];
+
+// Animations for staggered reveal
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 15,
+    },
+  },
+};
+
 export default function MyProjects() {
   return (
-    <section id="projects" className="py-20 px-6 text-white max-w-5xl mx-auto">
-      <h2 className="text-3xl font-bold mb-6 text-purple-300 text-center drop-shadow-[0_2px_6px_rgba(186,147,255,0.4)]">Projects</h2>
-      <div className="flex flex-wrap justify-center gap-6">
-        <div className="bg-white/10 p-6 rounded-xl backdrop-blur max-w-xs w-full">
-          <h3 className="text-xl font-semibold mb-2 text-white">GitHub README</h3>
-          <p className="text-white/70">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.
-          </p>
-        </div>
-        <div className="bg-white/10 p-6 rounded-xl backdrop-blur max-w-xs w-full">
-          <h3 className="text-xl font-semibold mb-2 text-white">Portfolio Website</h3>
-          <p className="text-white/70">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.
-          </p>
-        </div>
-      </div>
+    <section id="projects" className="py-20 px-6 text-white max-w-6xl mx-auto">
+      <h2 className="text-4xl sm:text-5xl font-bold mb-12 text-purple-300 text-center drop-shadow-[0_2px_6px_rgba(186,147,255,0.4)]">
+        My Projects
+      </h2>
+      <motion.div
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        {projects.map((project, index) => (
+          <motion.div
+            key={index}
+            className="flex flex-col p-6 rounded-xl border border-white/20 hover:border-purple-500 transition-all duration-300 transform hover:scale-105"
+            variants={itemVariants}
+          >
+            <h3 className="text-2xl font-bold text-white mb-2">{project.title}</h3>
+            <p className="text-white/70 mb-4 flex-grow">{project.description}</p>
+            
+            <div className="flex flex-wrap gap-2 mb-4">
+              {project.technologies.map(tech => (
+                <span key={tech} className="px-3 py-1 bg-white/10 rounded-full text-sm text-white/80 border border-white/10">
+                  {tech}
+                </span>
+              ))}
+            </div>
+
+            <div className="mt-auto flex gap-4">
+              <a
+                href={project.githubLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full bg-purple-500 hover:bg-purple-400 transition-all"
+              >
+                <FaGithub />
+                GitHub
+              </a>
+              <a
+                href={project.demoLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full bg-white/10 hover:bg-white/20 transition-all"
+              >
+                Live Demo
+              </a>
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
     </section>
   );
 }

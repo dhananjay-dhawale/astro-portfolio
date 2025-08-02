@@ -1,6 +1,31 @@
 import React from 'react';
 import { FaGithub, FaLinkedin, FaTwitter, FaMedium, FaInstagram, FaCode, FaRegFileCode, FaChessPawn } from 'react-icons/fa';
 import { SiLeetcode, SiCodechef, SiGeeksforgeeks, SiHackerrank, SiCodeforces, SiDuolingo, SiQuora } from 'react-icons/si';
+import { motion, type Variants } from 'framer-motion';
+
+// Variants for a staggered reveal effect
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 15,
+    },
+  },
+};
 
 // Restructured data to include categories, icons, and brand-colored hovers
 const categories = [
@@ -39,31 +64,49 @@ const categories = [
 
 export default function Links() {
   return (
-    <div className="space-y-8">
-      <h2 className="text-3xl font-semibold text-purple-300 drop-shadow-[0_2px_4px_rgba(186,147,255,0.2)]">
+    <motion.div
+      className="space-y-8"
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.2 }}
+    >
+      <motion.h2
+        className="text-3xl font-semibold text-purple-300 drop-shadow-[0_2px_4px_rgba(186,147,255,0.2)]"
+        variants={itemVariants}
+      >
         Find Me Online
-      </h2>
-      <div className="flex flex-col gap-8">
+      </motion.h2>
+      <motion.div className="flex flex-col gap-8" variants={containerVariants}>
         {categories.map(category => (
           <div key={category.title}>
-            <h3 className="text-xl font-semibold mb-4 text-purple-200">{category.title}</h3>
-            <div className="flex flex-wrap gap-4">
+            <motion.h3
+              className="text-xl font-semibold mb-4 text-purple-200"
+              variants={itemVariants}
+            >
+              {category.title}
+            </motion.h3>
+            <motion.div
+              className="flex flex-wrap gap-4"
+              variants={containerVariants}
+            >
               {category.links.map(link => (
-                <a
+                <motion.a
                   key={link.name}
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 ${link.color} hover:text-black transition-all text-sm font-medium border border-white/20`}
+                  variants={itemVariants}
                 >
                   <link.icon className="h-4 w-4" />
                   <span>{link.name}</span>
-                </a>
+                </motion.a>
               ))}
-            </div>
+            </motion.div>
           </div>
         ))}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
