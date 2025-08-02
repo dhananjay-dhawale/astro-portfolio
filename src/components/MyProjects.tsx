@@ -6,13 +6,13 @@ export default function MyProjects() {
         <div className="bg-white/10 p-6 rounded-xl backdrop-blur max-w-xs w-full">
           <h3 className="text-xl font-semibold mb-2 text-white">GitHub README</h3>
           <p className="text-white/70">
-            A personalized README with GitHub stats, activity graph, and profile overview—built using Markdown.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.
           </p>
         </div>
         <div className="bg-white/10 p-6 rounded-xl backdrop-blur max-w-xs w-full">
           <h3 className="text-xl font-semibold mb-2 text-white">Portfolio Website</h3>
           <p className="text-white/70">
-            A minimalist personal portfolio built using Astro, React, and TailwindCSS. Fully responsive and fast.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.
           </p>
         </div>
       </div>

@@ -5,6 +5,7 @@ export default function Header() {
         <a href="/astro-portfolio/" className="hover:text-sky-400">Home</a>
         <a href="/astro-portfolio/about" className="hover:text-sky-400">About</a>
         <a href="/astro-portfolio/projects" className="hover:text-sky-400">Projects</a>
+        <a href="/astro-portfolio/connect" className="hover:text-sky-400">Connect</a>
       </nav>
     </header>
   );
