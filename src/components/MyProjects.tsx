@@ -15,15 +15,15 @@ const projects = [
     title: 'Chess Heat Map',
     description: 'Personal project which i have been trying to build for a long time, hopefully it will be done soon.',
     technologies: ['Java', 'Spring Boot', 'Angular'],
-    githubLink: '#',
-    demoLink: '#'
+    githubLink: 'https://github.com/dhananjay-dhawale/react-chess-heatmap',
+    demoLink: 'https://dhananjay-dhawale.github.io/react-chess-heatmap/'
   },
   {
-    title: 'Project Find Me a GF',
-    description: 'Project gamma is an e-commerce platform developed with a focus on user experience and performance. It includes features like a shopping cart and a secure payment gateway.',
-    technologies: ['TypeScript', 'Node.js', 'Express', 'PostgreSQL'],
-    githubLink: '#',
-    demoLink: '#'
+    title: 'CP Templates',
+    description: 'Project includes various templates for competitive programming, which can be used to solve problems quickly.',
+    technologies: ['C++'],
+    githubLink: 'https://github.com/dhananjay-dhawale/CP-templates',
+    demoLink: 'https://github.com/dhananjay-dhawale/CP-templates'
   }
 ];
 
