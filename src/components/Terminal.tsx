@@ -103,43 +103,54 @@ const Terminal: React.FC = () => {
 
   const playSound = (type: 'keypress' | 'enter' | 'error') => {
     if (!soundEnabled) return;
+
     try {
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      if (audioContext.state === 'suspended') { audioContext.resume(); }
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-      switch (type) {
-        case 'keypress':
-          oscillator.frequency.setValueAtTime(1000, audioContext.currentTime);
-          oscillator.type = 'square';
-          gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
-          gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.05);
-          oscillator.start();
-          oscillator.stop(audioContext.currentTime + 0.05);
-          break;
+        if (type === 'keypress') {
+        // randomly pick a sound1.mp3 to sound7.mp3
+        const soundIndex = Math.floor(Math.random() * 7) + 1;
+        const audio = new Audio(`/public/audio/sound${soundIndex}.wav`);
+        audio.volume = 0.5;
+        audio.play().catch(() => {
+            // silent fallback if autoplay fails
+        });
+        return;
+        }
+
+        // original oscillator-based sounds for 'enter' and 'error'
+        const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+        if (audioContext.state === 'suspended') {
+        audioContext.resume();
+        }
+
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        switch (type) {
         case 'enter':
-          oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-          oscillator.type = 'sine';
-          gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-          gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.15);
-          oscillator.start();
-          oscillator.stop(audioContext.currentTime + 0.15);
-          break;
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            oscillator.type = 'sine';
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.15);
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.15);
+            break;
+
         case 'error':
-          oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
-          oscillator.type = 'sawtooth';
-          gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
-          gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.2);
-          oscillator.start();
-          oscillator.stop(audioContext.currentTime + 0.2);
-          break;
-      }
+            oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+            oscillator.type = 'sawtooth';
+            gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.2);
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.2);
+            break;
+        }
     } catch (error) {
-      // Silent fallback
+        // Silent fallback
     }
   };
+
 
   const typeResponse = async (responses: string[], onUpdate: (line: TerminalLine) => void) => {
     setIsTyping(true);
