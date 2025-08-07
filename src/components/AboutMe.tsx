@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion, type Variants } from 'framer-motion';
+import { FaChessPawn, FaBlog, FaMicrophoneAlt, FaPalette, FaBicycle, FaCamera, FaMusic, FaBookReader } from 'react-icons/fa';
 
 const dpUrl = `${import.meta.env.BASE_URL}dp.jpeg`;
 
@@ -36,22 +37,22 @@ const skillData = {
   'AI/ML': ['Computer Vision', 'Machine Learning', 'Large Language Models (LLMs)', 'Prompt Engineering'],
 };
 
-// List of interests
+// Updated interests data with icons
 const interests = [
-  'Writing technical blogs on Medium',
-  'Chess, Badminton, and Piano',
-  'Cycling, Dancing, and Photography',
-  'Reading and listening to classical music',
-  'Exploring cutting-edge AI/ML advancements'
+  { name: 'Writing technical blogs on Medium', icon: FaBlog },
+  { name: 'Chess, Badminton, and Piano', icon: FaChessPawn },
+  { name: 'Cycling, Dancing, and Photography', icon: FaCamera },
+  { name: 'Reading and listening to classical music', icon: FaMusic },
+  { name: 'Exploring cutting-edge AI/ML advancements', icon: FaMicrophoneAlt },
 ];
 
 export default function AboutMe() {
   return (
     <section id="about" className="max-w-6xl mx-auto py-16 px-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start"> {/* Change is here */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
         {/* Left Column: Image with animation */}
         <motion.div
-          className="flex justify-center md:justify-end md:sticky md:top-20" // Optional: makes the image sticky on desktop
+          className="flex justify-center md:justify-end md:sticky md:top-20"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -135,13 +136,18 @@ export default function AboutMe() {
             >
               Extracurricular & Interests
             </motion.h2>
-            <motion.ul className="list-disc list-inside text-lg text-gray-200 leading-relaxed space-y-2" variants={containerVariants}>
+            <motion.div className="grid grid-cols-1 sm:grid-cols-2 gap-4" variants={containerVariants}>
               {interests.map((interest, index) => (
-                <motion.li key={index} variants={itemVariants}>
-                  {interest}
-                </motion.li>
+                <motion.div
+                  key={index}
+                  className="flex items-center gap-4 p-4 rounded-xl border border-white/20 hover:border-purple-500 transition-all duration-300 transform hover:scale-105"
+                  variants={itemVariants}
+                >
+                  <interest.icon className="h-6 w-6 text-purple-400" />
+                  <span className="text-lg text-gray-200">{interest.name}</span>
+                </motion.div>
               ))}
-            </motion.ul>
+            </motion.div>
           </motion.div>
         </motion.div>
       </div>
