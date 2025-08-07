@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Generate a clean ASCII art banner for DJAY
 const generateWelcomeBanner = (): string[] => {
   return [
     ' /\\_/\\     ┌──────────────────────────┐',
@@ -12,7 +11,6 @@ const generateWelcomeBanner = (): string[] => {
     ''
   ];
 };
-
 
 interface TerminalLine {
   type: 'command' | 'output' | 'error';
@@ -235,7 +233,7 @@ const Terminal: React.FC = () => {
       }
     } else if (e.key === 'Tab') {
       e.preventDefault();
-      const commands = ['help', 'about', 'projects', 'contact', 'clear', 'home', 'sound'];
+      const commands = ['help', 'home', 'about', 'projects', 'connect', 'clear', 'sound'];
       const matches = commands.filter(cmd => cmd.startsWith(input.toLowerCase()));
       if (matches.length === 1) {
         setInput(matches[0]);
@@ -325,7 +323,7 @@ const Terminal: React.FC = () => {
           </motion.div>
         )}
 
-        <div className="flex items-center mt-2">
+        <div className="flex items-center mt-2 group">
           <span className="mr-2 text-cyan-400 font-semibold">$</span>
           <input
             ref={inputRef}
@@ -335,16 +333,7 @@ const Terminal: React.FC = () => {
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             disabled={isTyping}
-            placeholder={isTyping ? "Processing..." : "Type a command... (↑/↓ for history)"}
           />
-          <motion.span 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ repeat: Infinity, duration: 0.8, ease: "easeInOut" }}
-            className={`text-green-400 ml-1 font-bold ${isTyping ? 'hidden' : ''}`}
-          >
-            █
-          </motion.span>
         </div>
         
         {history.length <= 20 && (
@@ -357,7 +346,6 @@ const Terminal: React.FC = () => {
             💡 try <strong>help</strong> for commands, use <strong>↑/↓</strong> for history, and <strong>tab</strong> for autocomplete.
         </motion.div>
         )}
-
       </div>
     </motion.div>
   );
