@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, type Variants } from 'framer-motion';
 import { FaChessPawn, FaBlog, FaMicrophoneAlt, FaPalette, FaBicycle, FaCamera, FaMusic, FaBookReader } from 'react-icons/fa';
+import Terminal from './Terminal'; // Import the new Terminal component
 
 const dpUrl = `${import.meta.env.BASE_URL}dp.jpeg`;
 
@@ -50,19 +51,10 @@ export default function AboutMe() {
   return (
     <section id="about" className="max-w-6xl mx-auto py-16 px-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-        {/* Left Column: Image with animation */}
-        <motion.div
-          className="flex justify-center md:justify-end md:sticky md:top-20"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          <img
-            src={dpUrl}
-            alt="Dhananjay Dhawale"
-            className="w-64 h-64 md:w-80 md:h-80 object-cover rounded-full shadow-lg border-4 border-purple-400"
-          />
-        </motion.div>
+        {/* Left Column: Terminal component */}
+        <div className="flex justify-center md:justify-end md:sticky md:top-20 md:pr-12">
+            <Terminal />
+        </div>
 
         {/* Right Column: Text & Skills with staggered animation */}
         <motion.div
