@@ -17,17 +17,29 @@ interface TerminalLine {
   content: string;
 }
 
-// Typing test sentences
-const typingTestSentences = [
-  "The quick brown fox jumps over the lazy dog.",
-  "Programming is the art of telling another human being what one wants the computer to do.",
-  "JavaScript is a versatile programming language that runs in web browsers and servers.",
-  "React makes it painless to create interactive user interfaces for web applications.",
-  "TypeScript adds static type definitions to JavaScript making development more robust.",
-  "Web development involves creating websites and applications that run on the internet.",
-  "Modern browsers support many advanced features like service workers and web assembly.",
-  "Terminal interfaces provide powerful ways to interact with computer systems efficiently."
+// Word lists for dynamic sentence generation
+const commonWords = [
+  'the', 'and', 'for', 'are', 'but', 'not', 'you', 'all', 'can', 'her', 'was', 'one', 'our', 'had', 'day', 'get', 'use', 'man', 'new', 'now', 'way', 'may', 'say', 'each', 'which', 'their', 'time', 'will', 'about', 'if', 'up', 'out', 'many', 'then', 'them', 'these', 'so', 'some', 'what', 'see', 'him', 'two', 'how', 'its', 'who', 'did', 'yes', 'his', 'been', 'long', 'well', 'were', 'said', 'each', 'she', 'have', 'from', 'they', 'know', 'want', 'been', 'good', 'much', 'some', 'time', 'very', 'when', 'come', 'here', 'just', 'like', 'over', 'also', 'back', 'after', 'first', 'well', 'work'
 ];
+
+const techWords = [
+  'code', 'debug', 'array', 'object', 'function', 'variable', 'method', 'class', 'import', 'export', 'async', 'await', 'promise', 'callback', 'event', 'element', 'component', 'props', 'state', 'hook', 'render', 'virtual', 'browser', 'server', 'client', 'database', 'query', 'response', 'request', 'api', 'json', 'xml', 'html', 'css', 'javascript', 'typescript', 'react', 'node', 'npm', 'git', 'github', 'deploy', 'build', 'test', 'mock', 'unit', 'integration', 'framework', 'library', 'package', 'module', 'interface', 'type', 'string', 'number', 'boolean', 'null', 'undefined', 'console', 'log', 'error', 'warning'
+];
+
+// Generate random typing test sentence
+const generateTypingTest = (length: number = 12): string => {
+  const allWords = [...commonWords, ...techWords];
+  const words: string[] = [];
+  
+  for (let i = 0; i < length; i++) {
+    const randomWord = allWords[Math.floor(Math.random() * allWords.length)];
+    words.push(randomWord);
+  }
+  
+  // Capitalize first word and add period
+  const sentence = words.join(' ');
+  return sentence.charAt(0).toUpperCase() + sentence.slice(1) + '.';
+};
 
 // Custom hook for command handling (Minimalist version)
 const useCommandHandler = () => {
@@ -103,6 +115,13 @@ const Terminal: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
   
+  // Global WPM tracking
+  const [globalWpm, setGlobalWpm] = useState({
+    startTime: 0,
+    charactersTyped: 0,
+    currentWpm: 0
+  });
+  
   // Typing test states
   const [typingTest, setTypingTest] = useState({
     active: false,
@@ -130,25 +149,25 @@ const Terminal: React.FC = () => {
     }
   }, []);
 
-  // Calculate typing stats
+  // Calculate global WPM for all typing
   useEffect(() => {
-    if (typingTest.active && typingTest.userInput && typingTest.startTime) {
-      const timeElapsed = (Date.now() - typingTest.startTime) / 1000 / 60; // minutes
-      const wordsTyped = typingTest.userInput.trim().split(' ').length;
+    if (globalWpm.startTime && globalWpm.charactersTyped > 0) {
+      const timeElapsed = (Date.now() - globalWpm.startTime) / 1000 / 60; // minutes
+      const wordsTyped = globalWpm.charactersTyped / 5; // Standard: 5 characters = 1 word
       const wpm = Math.round(wordsTyped / Math.max(timeElapsed, 0.1));
-      
-      // Calculate accuracy
-      let correctChars = 0;
-      for (let i = 0; i < typingTest.userInput.length; i++) {
-        if (typingTest.userInput[i] === typingTest.sentence[i]) {
-          correctChars++;
-        }
-      }
-      const accuracy = Math.round((correctChars / Math.max(typingTest.userInput.length, 1)) * 100);
-      
-      setTypingTest(prev => ({ ...prev, wpm, accuracy }));
+      setGlobalWpm(prev => ({ ...prev, currentWpm: wpm }));
     }
-  }, [typingTest.userInput, typingTest.startTime, typingTest.active]);
+  }, [globalWpm.charactersTyped, globalWpm.startTime]);
+
+  // Reset global WPM after inactivity
+  useEffect(() => {
+    const resetTimer = setTimeout(() => {
+      if (globalWpm.startTime && Date.now() - globalWpm.startTime > 10000) { // 10 seconds inactivity
+        setGlobalWpm({ startTime: 0, charactersTyped: 0, currentWpm: 0 });
+      }
+    }, 10000);
+    return () => clearTimeout(resetTimer);
+  }, [globalWpm.startTime]);
 
   const playSound = (type: 'keypress' | 'enter' | 'error') => {
     if (!soundEnabled) return;
@@ -207,7 +226,7 @@ const Terminal: React.FC = () => {
   };
 
   const startTypingTest = () => {
-    const randomSentence = typingTestSentences[Math.floor(Math.random() * typingTestSentences.length)];
+    const randomSentence = generateTypingTest(15); // Generate 15 words
     setTypingTest({
       active: true,
       sentence: randomSentence,
@@ -274,6 +293,11 @@ const Terminal: React.FC = () => {
     const trimmedCommand = command.trim();
     if (!trimmedCommand) return;
 
+    // Change sound randomly on every enter press
+    const soundIndex = Math.floor(Math.random() * 7) + 1;
+    const newSoundPath = `/public/audio/sound${soundIndex}.wav`;
+    setCurrentSoundFile(newSoundPath);
+
     playSound('enter');
     setCommandHistory(prev => {
       const newHistory = [trimmedCommand, ...prev.filter(cmd => cmd !== trimmedCommand)];
@@ -284,14 +308,6 @@ const Terminal: React.FC = () => {
     setHistory(prev => [...prev, { type: 'command', content: `$ ${trimmedCommand}` }]);
 
     const result = handleCommand(trimmedCommand);
-    const allowedCommands = ['projects', 'about', 'help', 'connect', 'home'];
-
-    // Check if the command entered is one of the specified commands
-    if (allowedCommands.includes(trimmedCommand.toLowerCase())) {
-        const soundIndex = Math.floor(Math.random() * 7) + 1;
-        const newSoundPath = `/public/audio/sound${soundIndex}.wav`;
-        setCurrentSoundFile(newSoundPath);
-    }
     
     if (trimmedCommand.toLowerCase() === 'clear') {
       setHistory(generateWelcomeBanner().map(line => ({ type: 'output', content: line })));
@@ -334,6 +350,23 @@ const Terminal: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
+    
+    // Track global WPM for all typing (not just typing test)
+    if (!typingTest.active) {
+      if (!globalWpm.startTime && newValue.length > 0) {
+        setGlobalWpm({ startTime: Date.now(), charactersTyped: 1, currentWpm: 0 });
+      } else if (globalWpm.startTime && newValue.length > input.length) {
+        const newCharCount = globalWpm.charactersTyped + 1;
+        const timeElapsed = (Date.now() - globalWpm.startTime) / 1000 / 60; // minutes
+        const wordsTyped = newCharCount / 5; // Standard: 5 characters = 1 word
+        const wpm = Math.round(wordsTyped / Math.max(timeElapsed, 0.1));
+        setGlobalWpm(prev => ({ 
+          ...prev, 
+          charactersTyped: newCharCount,
+          currentWpm: wpm 
+        }));
+      }
+    }
     
     if (typingTest.active) {
       // Handle typing test input
@@ -463,6 +496,11 @@ const Terminal: React.FC = () => {
           <span className="ml-4 text-gray-300 text-sm font-mono">
             dhananjay@portfolio:~$
           </span>
+          {globalWpm.currentWpm > 0 && !typingTest.active && (
+            <span className="ml-4 text-cyan-400 text-xs">
+              WPM: {globalWpm.currentWpm}
+            </span>
+          )}
         </div>
         <button
           onClick={toggleSound}
