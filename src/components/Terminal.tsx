@@ -23,7 +23,7 @@ const useCommandHandler = () => {
     'home': '/astro-portfolio/',
     'about': '/astro-portfolio/about',
     'projects': '/astro-portfolio/projects',
-    'contact': '/astro-portfolio/contact'
+    'connect': '/astro-portfolio/connect'
   };
 
   const handleCommand = (command: string): { type: 'navigate' | 'response', data: string[] | string } => {
@@ -45,7 +45,7 @@ const useCommandHandler = () => {
         responses.push(
           'Available Commands:',
           '─'.repeat(25),
-          '• home, about, projects, contact (Navigate to pages)',
+          '• home, about, projects, connect (Navigate to pages)',
           '• clear                     (Clear terminal)',
           '• sound                     (Toggle sound on/off)'
         );
@@ -82,6 +82,7 @@ const Terminal: React.FC = () => {
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
+  const [currentSoundFile, setCurrentSoundFile] = useState<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
 
@@ -106,9 +107,15 @@ const Terminal: React.FC = () => {
 
     try {
         if (type === 'keypress') {
-        // randomly pick a sound1.mp3 to sound7.mp3
-        const soundIndex = Math.floor(Math.random() * 7) + 1;
-        const audio = new Audio(`/public/audio/sound${soundIndex}.wav`);
+        let audioPath = currentSoundFile;
+        // If currentSoundFile is not set, pick one randomly for the first time
+        if (!audioPath) {
+          const soundIndex = Math.floor(Math.random() * 7) + 1;
+          audioPath = `/public/audio/sound${soundIndex}.wav`;
+          setCurrentSoundFile(audioPath); // Set the new random sound as the current sound
+        }
+
+        const audio = new Audio(audioPath);
         audio.volume = 0.5;
         audio.play().catch(() => {
             // silent fallback if autoplay fails
@@ -179,7 +186,15 @@ const Terminal: React.FC = () => {
     setHistory(prev => [...prev, { type: 'command', content: `$ ${trimmedCommand}` }]);
 
     const result = handleCommand(trimmedCommand);
+    const allowedCommands = ['projects', 'about', 'help', 'connect', 'home'];
 
+    // Check if the command entered is one of the specified commands
+    if (allowedCommands.includes(trimmedCommand.toLowerCase())) {
+        const soundIndex = Math.floor(Math.random() * 7) + 1;
+        const newSoundPath = `/public/audio/sound${soundIndex}.wav`;
+        setCurrentSoundFile(newSoundPath);
+    }
+    
     if (trimmedCommand.toLowerCase() === 'clear') {
       setHistory(generateWelcomeBanner().map(line => ({ type: 'output', content: line })));
       setInput('');
