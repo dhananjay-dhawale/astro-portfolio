@@ -1,31 +1,93 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// Generate a clean ASCII art banner for DJAY
+const generateWelcomeBanner = (): string[] => {
+  return [
+    ' /\\_/\\     ┌──────────────────────────┐',
+    '( o.o )    │ welcome to djay\'s terminal │',
+    ' > ^ <     └──────────────────────────┘',
+    '',
+    'type "help" to explore available commands.',
+    ''
+  ];
+};
+
+
 interface TerminalLine {
   type: 'command' | 'output' | 'error';
   content: string;
-  timestamp?: Date;
 }
 
+// Custom hook for command handling (Minimalist version)
+const useCommandHandler = () => {
+  const navigationCommands: Record<string, string> = {
+    'home': '/astro-portfolio/',
+    'about': '/astro-portfolio/about',
+    'projects': '/astro-portfolio/projects',
+    'contact': '/astro-portfolio/contact'
+  };
+
+  const handleCommand = (command: string): { type: 'navigate' | 'response', data: string[] | string } => {
+    const trimmedCommand = command.trim();
+    const mainCommand = trimmedCommand.toLowerCase();
+
+    // Navigation commands
+    if (navigationCommands[mainCommand]) {
+      return {
+        type: 'navigate',
+        data: navigationCommands[mainCommand]
+      };
+    }
+
+    const responses: string[] = [];
+
+    switch (mainCommand) {
+      case 'help':
+        responses.push(
+          'Available Commands:',
+          '─'.repeat(25),
+          '• home, about, projects, contact (Navigate to pages)',
+          '• clear                     (Clear terminal)',
+          '• sound                     (Toggle sound on/off)'
+        );
+        break;
+
+      case 'clear':
+        responses.push('clear');
+        return { type: 'response', data: responses };
+
+      case 'sound':
+        responses.push('sound');
+        return { type: 'response', data: responses };
+
+      default:
+        responses.push(
+          `bash: ${trimmedCommand}: command not found`,
+          'Type "help" for a list of commands.'
+        );
+        return { type: 'response', data: responses };
+    }
+
+    return { type: 'response', data: responses };
+  };
+
+  return { handleCommand };
+};
+
 const Terminal: React.FC = () => {
-  const [history, setHistory] = useState<TerminalLine[]>([
-    { type: 'output', content: 'Welcome to Dhananjay\'s Portfolio Terminal v1.0.0' },
-    { type: 'output', content: 'Type "help" to see available commands.' },
-    { type: 'output', content: '' }
-  ]);
+  const [history, setHistory] = useState<TerminalLine[]>(() => 
+    generateWelcomeBanner().map(line => ({ type: 'output', content: line }))
+  );
   const [input, setInput] = useState<string>('');
+  const [commandHistory, setCommandHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState<number>(-1);
   const [isTyping, setIsTyping] = useState<boolean>(false);
-  const [showCursor, setShowCursor] = useState<boolean>(true);
+  const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
 
-  // Cursor blinking effect
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setShowCursor(prev => !prev);
-    }, 530);
-    return () => clearInterval(interval);
-  }, []);
+  const { handleCommand } = useCommandHandler();
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -34,256 +96,152 @@ const Terminal: React.FC = () => {
     }
   }, [history]);
 
-  // Focus on input when component loads and when clicked
+  // Focus management
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, []);
 
-  // Sound effects (using Web Audio API for compatibility)
   const playSound = (type: 'keypress' | 'enter' | 'error') => {
+    if (!soundEnabled) return;
     try {
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      
-      // Resume audio context if suspended (required by some browsers)
-      if (audioContext.state === 'suspended') {
-        audioContext.resume();
-      }
-      
+      if (audioContext.state === 'suspended') { audioContext.resume(); }
       const oscillator = audioContext.createOscillator();
       const gainNode = audioContext.createGain();
-      
       oscillator.connect(gainNode);
       gainNode.connect(audioContext.destination);
-      
       switch (type) {
         case 'keypress':
-          oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+          oscillator.frequency.setValueAtTime(1000, audioContext.currentTime);
           oscillator.type = 'square';
-          gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-          gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
+          gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.05);
           oscillator.start();
-          oscillator.stop(audioContext.currentTime + 0.1);
+          oscillator.stop(audioContext.currentTime + 0.05);
           break;
         case 'enter':
-          oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
+          oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
           oscillator.type = 'sine';
+          gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.15);
+          oscillator.start();
+          oscillator.stop(audioContext.currentTime + 0.15);
+          break;
+        case 'error':
+          oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+          oscillator.type = 'sawtooth';
           gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
           gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.2);
           oscillator.start();
           oscillator.stop(audioContext.currentTime + 0.2);
           break;
-        case 'error':
-          oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
-          oscillator.type = 'sawtooth';
-          gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-          gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.3);
-          oscillator.start();
-          oscillator.stop(audioContext.currentTime + 0.3);
-          break;
       }
     } catch (error) {
-      // Fallback: Try to play a simple beep sound if Web Audio fails
-      try {
-        const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+Hi-NVcHgUumvqVaiZCN0gciAECAYABAFBX');
-        audio.volume = 0.1;
-        audio.play().catch(() => {});
-      } catch (fallbackError) {
-        // Silent fallback - no sound but function won't crash
-        console.log('Audio not supported in this environment');
+      // Silent fallback
+    }
+  };
+
+  const typeResponse = async (responses: string[], onUpdate: (line: TerminalLine) => void) => {
+    setIsTyping(true);
+    for (const response of responses) {
+      if (!response.trim()) {
+          onUpdate({ type: 'output', content: '' });
+          await new Promise(resolve => setTimeout(resolve, 50));
+      } else {
+          onUpdate({ type: 'output', content: response });
       }
     }
-  };
-
-  // Simulate typing effect for responses
-  const typeResponse = async (responses: string[]) => {
-    setIsTyping(true);
-    
-    for (const response of responses) {
-      await new Promise(resolve => setTimeout(resolve, Math.random() * 300 + 200));
-      setHistory(prev => [...prev, { type: 'output' as const, content: response, timestamp: new Date() }]);
-    }
-    
     setIsTyping(false);
   };
-
-  // Enhanced command handling with page navigation
-  const handleCommand = async (command: string) => {
+  
+  const executeCommand = async (command: string) => {
     const trimmedCommand = command.trim();
     if (!trimmedCommand) return;
 
     playSound('enter');
-    
-    // Add command to history
-    const newHistory: TerminalLine[] = [...history, { type: 'command' as const, content: `$ ${trimmedCommand}`, timestamp: new Date() }];
-    setHistory(newHistory);
+    setCommandHistory(prev => {
+      const newHistory = [trimmedCommand, ...prev.filter(cmd => cmd !== trimmedCommand)];
+      return newHistory.slice(0, 20); // Keep last 20 commands
+    });
+    setHistoryIndex(-1);
 
-    const commandParts = trimmedCommand.toLowerCase().split(' ');
-    const mainCommand = commandParts[0];
+    setHistory(prev => [...prev, { type: 'command', content: `$ ${trimmedCommand}` }]);
 
-    // Navigation commands - redirect to actual pages
-    const navigationCommands: Record<string, string> = {
-      'home': '/astro-portfolio/',
-      'about': '/astro-portfolio/about',
-      'projects': '/astro-portfolio/projects',
-      'contact': '/astro-portfolio/contact'
-    };
+    const result = handleCommand(trimmedCommand);
 
-    if (navigationCommands[mainCommand]) {
-      const responses = [
-        '',
-        `🚀 Navigating to ${mainCommand} page...`,
-        `Redirecting to: ${navigationCommands[mainCommand]}`,
-        ''
-      ];
-      
-      await typeResponse(responses);
-      
-      // Redirect after a short delay
-      setTimeout(() => {
-        window.location.href = navigationCommands[mainCommand];
-      }, 1000);
-      
+    if (trimmedCommand.toLowerCase() === 'clear') {
+      setHistory(generateWelcomeBanner().map(line => ({ type: 'output', content: line })));
       setInput('');
       return;
     }
 
-    // Terminal-only commands
-    const responses: string[] = [];
-
-    switch (mainCommand) {
-      case 'help':
-        responses.push(
-          '',
-          '📋 Available Commands:',
-          '─'.repeat(40),
-          '🌐 Navigation Commands:',
-          '  home          - Go to home page',
-          '  about         - Go to about page',
-          '  projects      - Go to projects page',
-          '  contact       - Go to contact page',
-          '',
-          '💻 Terminal Commands:',
-          '  help          - Show this help message',
-          '  clear         - Clear the terminal',
-          '  date          - Show current date and time',
-          '  whoami        - Display current user info',
-          '  ls            - List available pages',
-          '  skills        - Display technical skills',
-          '  links         - Show social media links',
-          '',
-          '💡 Tip: Use navigation commands to visit actual pages!',
-          ''
-        );
-        break;
-
-      case 'skills':
-        responses.push(
-          '',
-          '🛠️ Technical Skills',
-          '─'.repeat(40),
-          '💻 Programming Languages:',
-          '   Java, JavaScript, TypeScript, Python',
-          '',
-          '🌐 Frontend Technologies:',
-          '   Angular, React, HTML5, CSS3, Tailwind CSS',
-          '',
-          '⚙️ Backend Technologies:',
-          '   Spring Boot, Spring Security, REST APIs',
-          '',
-          '🗄️ Databases:',
-          '   MySQL, PostgreSQL, MongoDB',
-          '',
-          '🔧 Tools & Others:',
-          '   Git, Docker, AWS, Postman, IntelliJ IDEA',
-          '',
-          '🏆 Competitive Programming:',
-          '   LeetCode, Codeforces, CodeChef, HackerRank',
-          ''
-        );
-        break;
-
-      case 'links':
-        responses.push(
-          '',
-          '🔗 Find Me Online',
-          '─'.repeat(40),
-          '💼 LinkedIn: linkedin.com/in/dhananjay-dhawale-829659198',
-          '💻 GitHub: github.com/dhananjay-dhawale',
-          '🐦 Twitter: @nonchalantnerdd',
-          '📸 Instagram: @djayclicks',
-          '✍️ Medium: medium.com/@dhananjaydhawale9',
-          '🧩 LeetCode: leetcode.com/piudpie',
-          '⚔️ Codeforces: codeforces.com/profile/djay24',
-          ''
-        );
-        break;
-
-      case 'clear':
-        setHistory([
-          { type: 'output', content: 'Terminal cleared.' },
-          { type: 'output', content: 'Type "help" to see available commands.' },
-          { type: 'output', content: '' }
-        ] as TerminalLine[]);
-        setInput('');
-        return;
-
-      case 'date':
-        responses.push('', new Date().toString(), '');
-        break;
-
-      case 'whoami':
-        responses.push('', 'dhananjay@portfolio:~$ You are viewing Dhananjay\'s portfolio', '');
-        break;
-
-      case 'ls':
-        responses.push(
-          '',
-          'Available pages:',
-          'home  about  projects  contact',
-          '',
-          'Use: <page-name> to navigate (e.g., "about")',
-          ''
-        );
-        break;
-
-      default:
-        playSound('error');
-        responses.push(
-          '',
-          `bash: ${trimmedCommand}: command not found`,
-          'Type "help" to see available commands.',
-          `Did you mean to navigate? Try: home, about, projects, or contact`,
-          ''
-        );
-        break;
+    if (trimmedCommand.toLowerCase() === 'sound') {
+      setSoundEnabled(prev => !prev);
+      const status = !soundEnabled ? 'enabled' : 'disabled';
+      setHistory(prev => [...prev, { type: 'output', content: `Sound ${status}.` }]);
+      setInput('');
+      return;
     }
 
-    await typeResponse(responses);
-    setInput('');
+    if (result.type === 'navigate') {
+      const responses = [`🚀 Navigating to ${trimmedCommand} page...`];
+      await typeResponse(responses, line => setHistory(prev => [...prev, line]));
+      setTimeout(() => {
+        window.location.href = result.data as string;
+      }, 300);
+      setInput('');
+    } else {
+      const responses = result.data as string[];
+      const isError = responses[0]?.startsWith('bash:');
+      if (isError) playSound('error');
+
+      await typeResponse(responses, line => {
+        setHistory(prev => [...prev, { ...line, type: isError ? 'error' : 'output' }]);
+      });
+      setInput('');
+    }
   };
 
-  // Handle input changes with sound
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
-    if (newValue.length > input.length) {
+    if (newValue.length > input.length && !isTyping) {
       playSound('keypress');
     }
     setInput(newValue);
+    setHistoryIndex(-1);
   };
 
-  // Handle key presses
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !isTyping) {
-      handleCommand(input);
+      executeCommand(input);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (commandHistory.length > 0 && historyIndex < commandHistory.length - 1) {
+        const newIndex = historyIndex + 1;
+        setHistoryIndex(newIndex);
+        setInput(commandHistory[newIndex]);
+      }
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (historyIndex > 0) {
+        const newIndex = historyIndex - 1;
+        setHistoryIndex(newIndex);
+        setInput(commandHistory[newIndex]);
+      } else if (historyIndex === 0) {
+        setHistoryIndex(-1);
+        setInput('');
+      }
     } else if (e.key === 'Tab') {
       e.preventDefault();
-      // Simple auto-complete for common commands
-      const commands = ['help', 'about', 'skills', 'projects', 'contact', 'clear'];
+      const commands = ['help', 'about', 'projects', 'contact', 'clear', 'home', 'sound'];
       const matches = commands.filter(cmd => cmd.startsWith(input.toLowerCase()));
       if (matches.length === 1) {
         setInput(matches[0]);
+      } else if (matches.length > 1) {
+        const completionLine = { type: 'output' as const, content: `Possible completions: ${matches.join(', ')}` };
+        setHistory(prev => [...prev, completionLine]);
       }
     }
   };
@@ -294,15 +252,18 @@ const Terminal: React.FC = () => {
     }
   };
 
+  const toggleSound = () => {
+    setSoundEnabled(prev => !prev);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95, rotateX: -10 }}
       whileInView={{ opacity: 1, scale: 1, rotateX: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      className="w-full max-w-4xl mx-auto"
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="w-full max-w-5xl mx-auto"
     >
-      {/* Terminal Header */}
-      <div className="bg-gray-800 px-4 py-2 rounded-t-xl border-b border-gray-700">
+      <div className="bg-gray-800 px-4 py-2 rounded-t-xl border-b border-gray-700 flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="w-3 h-3 bg-red-500 rounded-full"></div>
           <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
@@ -311,9 +272,19 @@ const Terminal: React.FC = () => {
             dhananjay@portfolio:~$
           </span>
         </div>
+        <button
+          onClick={toggleSound}
+          className={`p-1 rounded text-sm transition-colors ${
+            soundEnabled 
+              ? 'text-green-400 hover:text-green-300' 
+              : 'text-gray-500 hover:text-gray-400'
+          }`}
+          title={`Sound ${soundEnabled ? 'enabled' : 'disabled'}`}
+        >
+          {soundEnabled ? '🔊' : '🔇'}
+        </button>
       </div>
 
-      {/* Terminal Body */}
       <div
         ref={terminalRef}
         onClick={handleTerminalClick}
@@ -327,9 +298,9 @@ const Terminal: React.FC = () => {
           {history.map((line, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
+              transition={{ duration: 0.2 }}
               className={`mb-1 ${
                 line.type === 'command' 
                   ? 'text-cyan-400 font-semibold' 
@@ -349,12 +320,11 @@ const Terminal: React.FC = () => {
             animate={{ opacity: 1 }}
             className="flex items-center text-yellow-400"
           >
-            <span className="mr-2">⟳</span>
+            <span className="mr-2 animate-spin">⟳</span>
             <span>Processing...</span>
           </motion.div>
         )}
 
-        {/* Input Line */}
         <div className="flex items-center mt-2">
           <span className="mr-2 text-cyan-400 font-semibold">$</span>
           <input
@@ -363,26 +333,31 @@ const Terminal: React.FC = () => {
             className="flex-1 bg-transparent border-none outline-none text-white caret-green-400 font-mono"
             value={input}
             onChange={handleInputChange}
-            onKeyDown={handleKeyPress}
+            onKeyDown={handleKeyDown}
             disabled={isTyping}
-            placeholder={isTyping ? "Processing..." : "Type a command..."}
+            placeholder={isTyping ? "Processing..." : "Type a command... (↑/↓ for history)"}
           />
-          {showCursor && !isTyping && (
-            <span className="text-green-400 animate-pulse">▋</span>
-          )}
-        </div>
-
-        {/* Hint for new users */}
-        {history.length <= 3 && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 0.7, y: 0 }}
-            transition={{ delay: 2, duration: 0.5 }}
-            className="mt-4 text-gray-500 text-xs italic"
+          <motion.span 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ repeat: Infinity, duration: 0.8, ease: "easeInOut" }}
+            className={`text-green-400 ml-1 font-bold ${isTyping ? 'hidden' : ''}`}
           >
-            💡 Try: "home", "about", "projects", or "contact" to navigate to pages!
-          </motion.div>
+            █
+          </motion.span>
+        </div>
+        
+        {history.length <= 20 && (
+        <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 0.7, y: 0 }}
+            transition={{ delay: 1, duration: 0.4, ease: 'easeOut' }}
+            className="mt-4 text-xs text-gray-400 text-center"
+        >
+            💡 try <strong>help</strong> for commands, use <strong>↑/↓</strong> for history, and <strong>tab</strong> for autocomplete.
+        </motion.div>
         )}
+
       </div>
     </motion.div>
   );
