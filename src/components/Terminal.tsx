@@ -17,6 +17,18 @@ interface TerminalLine {
   content: string;
 }
 
+// Typing test sentences
+const typingTestSentences = [
+  "The quick brown fox jumps over the lazy dog.",
+  "Programming is the art of telling another human being what one wants the computer to do.",
+  "JavaScript is a versatile programming language that runs in web browsers and servers.",
+  "React makes it painless to create interactive user interfaces for web applications.",
+  "TypeScript adds static type definitions to JavaScript making development more robust.",
+  "Web development involves creating websites and applications that run on the internet.",
+  "Modern browsers support many advanced features like service workers and web assembly.",
+  "Terminal interfaces provide powerful ways to interact with computer systems efficiently."
+];
+
 // Custom hook for command handling (Minimalist version)
 const useCommandHandler = () => {
   const navigationCommands: Record<string, string> = {
@@ -47,7 +59,8 @@ const useCommandHandler = () => {
           '─'.repeat(25),
           '• home, about, projects, connect (Navigate to pages)',
           '• clear                     (Clear terminal)',
-          '• sound                     (Toggle sound on/off)'
+          '• sound                     (Toggle sound on/off)',
+          '• typing                    (Start typing test)'
         );
         break;
 
@@ -57,6 +70,10 @@ const useCommandHandler = () => {
 
       case 'sound':
         responses.push('sound');
+        return { type: 'response', data: responses };
+
+      case 'typing':
+        responses.push('typing');
         return { type: 'response', data: responses };
 
       default:
@@ -85,6 +102,17 @@ const Terminal: React.FC = () => {
   const [currentSoundFile, setCurrentSoundFile] = useState<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
+  
+  // Typing test states
+  const [typingTest, setTypingTest] = useState({
+    active: false,
+    sentence: '',
+    userInput: '',
+    startTime: 0,
+    wpm: 0,
+    accuracy: 100,
+    completed: false
+  });
 
   const { handleCommand } = useCommandHandler();
 
@@ -101,6 +129,26 @@ const Terminal: React.FC = () => {
       inputRef.current.focus();
     }
   }, []);
+
+  // Calculate typing stats
+  useEffect(() => {
+    if (typingTest.active && typingTest.userInput && typingTest.startTime) {
+      const timeElapsed = (Date.now() - typingTest.startTime) / 1000 / 60; // minutes
+      const wordsTyped = typingTest.userInput.trim().split(' ').length;
+      const wpm = Math.round(wordsTyped / Math.max(timeElapsed, 0.1));
+      
+      // Calculate accuracy
+      let correctChars = 0;
+      for (let i = 0; i < typingTest.userInput.length; i++) {
+        if (typingTest.userInput[i] === typingTest.sentence[i]) {
+          correctChars++;
+        }
+      }
+      const accuracy = Math.round((correctChars / Math.max(typingTest.userInput.length, 1)) * 100);
+      
+      setTypingTest(prev => ({ ...prev, wpm, accuracy }));
+    }
+  }, [typingTest.userInput, typingTest.startTime, typingTest.active]);
 
   const playSound = (type: 'keypress' | 'enter' | 'error') => {
     if (!soundEnabled) return;
@@ -158,6 +206,56 @@ const Terminal: React.FC = () => {
     }
   };
 
+  const startTypingTest = () => {
+    const randomSentence = typingTestSentences[Math.floor(Math.random() * typingTestSentences.length)];
+    setTypingTest({
+      active: true,
+      sentence: randomSentence,
+      userInput: '',
+      startTime: 0,
+      wpm: 0,
+      accuracy: 100,
+      completed: false
+    });
+    setHistory(prev => [...prev, 
+      { type: 'output', content: '' },
+      { type: 'output', content: '🚀 Typing Test Started!' },
+      { type: 'output', content: '─'.repeat(50) },
+      { type: 'output', content: `Type the following sentence:` },
+      { type: 'output', content: '' },
+      { type: 'output', content: `"${randomSentence}"` },
+      { type: 'output', content: '' },
+      { type: 'output', content: 'Start typing to begin the timer. Press ESC to exit.' },
+      { type: 'output', content: '' }
+    ]);
+  };
+
+  const endTypingTest = () => {
+    if (typingTest.completed) {
+      setHistory(prev => [...prev,
+        { type: 'output', content: '' },
+        { type: 'output', content: '🎉 Typing Test Completed!' },
+        { type: 'output', content: `Final WPM: ${typingTest.wpm}` },
+        { type: 'output', content: `Final Accuracy: ${typingTest.accuracy}%` },
+        { type: 'output', content: '' }
+      ]);
+    } else {
+      setHistory(prev => [...prev,
+        { type: 'output', content: '' },
+        { type: 'output', content: '⏹️  Typing test cancelled.' },
+        { type: 'output', content: '' }
+      ]);
+    }
+    setTypingTest({
+      active: false,
+      sentence: '',
+      userInput: '',
+      startTime: 0,
+      wpm: 0,
+      accuracy: 100,
+      completed: false
+    });
+  };
 
   const typeResponse = async (responses: string[], onUpdate: (line: TerminalLine) => void) => {
     setIsTyping(true);
@@ -209,6 +307,12 @@ const Terminal: React.FC = () => {
       return;
     }
 
+    if (trimmedCommand.toLowerCase() === 'typing') {
+      startTypingTest();
+      setInput('');
+      return;
+    }
+
     if (result.type === 'navigate') {
       const responses = [`🚀 Navigating to ${trimmedCommand} page...`];
       await typeResponse(responses, line => setHistory(prev => [...prev, line]));
@@ -230,6 +334,29 @@ const Terminal: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
+    
+    if (typingTest.active) {
+      // Handle typing test input
+      if (!typingTest.startTime && newValue.length > 0) {
+        setTypingTest(prev => ({ ...prev, startTime: Date.now() }));
+      }
+      
+      // Check if test is completed
+      if (newValue === typingTest.sentence) {
+        setTypingTest(prev => ({ ...prev, userInput: newValue, completed: true }));
+        setTimeout(() => endTypingTest(), 500);
+        return;
+      }
+      
+      setTypingTest(prev => ({ ...prev, userInput: newValue }));
+      if (newValue.length > input.length && !isTyping) {
+        playSound('keypress');
+      }
+      setInput(newValue);
+      return;
+    }
+
+    // Normal terminal input
     if (newValue.length > input.length && !isTyping) {
       playSound('keypress');
     }
@@ -238,6 +365,14 @@ const Terminal: React.FC = () => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (typingTest.active) {
+      if (e.key === 'Escape') {
+        endTypingTest();
+        setInput('');
+      }
+      return;
+    }
+
     if (e.key === 'Enter' && !isTyping) {
       executeCommand(input);
     } else if (e.key === 'ArrowUp') {
@@ -259,7 +394,7 @@ const Terminal: React.FC = () => {
       }
     } else if (e.key === 'Tab') {
       e.preventDefault();
-      const commands = ['help', 'home', 'about', 'projects', 'connect', 'clear', 'sound'];
+      const commands = ['help', 'home', 'about', 'projects', 'connect', 'clear', 'sound', 'typing'];
       const matches = commands.filter(cmd => cmd.startsWith(input.toLowerCase()));
       if (matches.length === 1) {
         setInput(matches[0]);
@@ -278,6 +413,39 @@ const Terminal: React.FC = () => {
 
   const toggleSound = () => {
     setSoundEnabled(prev => !prev);
+  };
+
+  // Render typed text with correct/incorrect highlighting
+  const renderTypingProgress = () => {
+    if (!typingTest.active) return null;
+    
+    const { sentence, userInput } = typingTest;
+    return (
+      <div className="mb-4 p-3 bg-gray-800/50 rounded border border-gray-600">
+        <div className="text-sm mb-2 flex justify-between items-center">
+          <span className="text-cyan-400">Live Stats:</span>
+          <div className="flex gap-4 text-xs">
+            <span className="text-green-400">WPM: {typingTest.wpm}</span>
+            <span className="text-yellow-400">Accuracy: {typingTest.accuracy}%</span>
+          </div>
+        </div>
+        <div className="font-mono text-base leading-relaxed">
+          {sentence.split('').map((char, index) => {
+            let className = 'text-gray-400';
+            if (index < userInput.length) {
+              className = userInput[index] === char ? 'text-green-400 bg-green-900/30' : 'text-red-400 bg-red-900/30';
+            } else if (index === userInput.length) {
+              className = 'text-white bg-cyan-500/50 animate-pulse';
+            }
+            return (
+              <span key={index} className={className}>
+                {char}
+              </span>
+            );
+          })}
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -338,6 +506,8 @@ const Terminal: React.FC = () => {
           ))}
         </AnimatePresence>
 
+        {renderTypingProgress()}
+
         {isTyping && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -350,7 +520,9 @@ const Terminal: React.FC = () => {
         )}
 
         <div className="flex items-center mt-2 group">
-          <span className="mr-2 text-cyan-400 font-semibold">$</span>
+          <span className="mr-2 text-cyan-400 font-semibold">
+            {typingTest.active ? '⌨️' : '$'}
+          </span>
           <input
             ref={inputRef}
             type="text"
@@ -359,10 +531,11 @@ const Terminal: React.FC = () => {
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             disabled={isTyping}
+            placeholder={typingTest.active ? "Start typing the sentence above..." : ""}
           />
         </div>
         
-        {history.length <= 20 && (
+        {history.length <= 20 && !typingTest.active && (
         <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 0.7, y: 0 }}
@@ -370,6 +543,17 @@ const Terminal: React.FC = () => {
             className="mt-4 text-xs text-gray-400 text-center"
         >
             💡 try <strong>help</strong> for commands, use <strong>↑/↓</strong> for history, and <strong>tab</strong> for autocomplete.
+        </motion.div>
+        )}
+
+        {typingTest.active && (
+        <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 0.7, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.4, ease: 'easeOut' }}
+            className="mt-2 text-xs text-gray-400 text-center"
+        >
+            Press <strong>ESC</strong> to exit typing test
         </motion.div>
         )}
       </div>
