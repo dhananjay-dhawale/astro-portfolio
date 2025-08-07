@@ -94,6 +94,7 @@ export default function Links() {
                 <motion.a
                   key={link.name}
                   href={link.url}
+                  title="Clickable"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 ${link.color} hover:text-black transition-all text-sm font-medium border border-white/20`}
