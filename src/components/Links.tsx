@@ -94,13 +94,14 @@ export default function Links() {
                 <motion.a
                   key={link.name}
                   href={link.url}
-                  title="Clickable"
+                  title={`Visit my ${link.name} profile`}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={`Visit my ${link.name} profile (opens in new tab)`}
                   className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 ${link.color} hover:text-black transition-all text-sm font-medium border border-white/20`}
                   variants={itemVariants}
                 >
-                  <link.icon className="h-4 w-4" />
+                  <link.icon className="h-4 w-4" aria-hidden="true" />
                   <span>{link.name}</span>
                 </motion.a>
               ))}

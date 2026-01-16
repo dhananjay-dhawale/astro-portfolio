@@ -87,6 +87,7 @@ export default function Connect() {
               />
               <button
                 type="submit"
+                aria-label="Send message"
                 className="bg-purple-500 hover:bg-purple-400 text-white font-semibold px-6 py-2 rounded-full transition-all flex items-center justify-center gap-2"
               >
                 Send Message
@@ -107,6 +108,7 @@ export default function Connect() {
               href={resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Download resume (opens in new tab)"
               className="inline-flex items-center gap-2 px-6 py-3 bg-purple-500 hover:bg-purple-400 text-white font-semibold rounded-full transition-all shadow-lg"
             >
               Download Resume

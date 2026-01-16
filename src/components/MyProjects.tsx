@@ -105,15 +105,17 @@ export default function MyProjects() {
                 href={project.githubLink}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`View ${project.title} source code on GitHub (opens in new tab)`}
                 className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full bg-purple-500 hover:bg-purple-400 transition-all"
               >
-                <FaGithub />
+                <FaGithub aria-hidden="true" />
                 GitHub
               </a>
               <a
                 href={project.demoLink}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`View ${project.title} live demo (opens in new tab)`}
                 className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full bg-white/10 hover:bg-white/20 transition-all"
               >
                 Live Demo

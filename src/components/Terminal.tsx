@@ -41,13 +41,28 @@ const generateTypingTest = (length: number = 12): string => {
   return sentence.charAt(0).toUpperCase() + sentence.slice(1) + '.';
 };
 
+// Programming jokes for the joke command
+const programmingJokes = [
+  "Why do programmers prefer dark mode? Because light attracts bugs!",
+  "A SQL query walks into a bar, walks up to two tables and asks, 'Can I join you?'",
+  "Why do Java developers wear glasses? Because they can't C#!",
+  "There are only 10 types of people in the world: those who understand binary and those who don't.",
+  "Why was the JavaScript developer sad? Because he didn't Node how to Express himself.",
+  "A programmer's wife tells him: 'Go to the store and buy a loaf of bread. If they have eggs, buy a dozen.' He comes home with 12 loaves of bread.",
+  "Why do programmers always mix up Halloween and Christmas? Because Oct 31 = Dec 25!",
+  "What's a programmer's favorite hangout place? Foo Bar!",
+  "How many programmers does it take to change a light bulb? None, that's a hardware problem.",
+  "Why did the developer go broke? Because he used up all his cache!"
+];
+
 // Custom hook for command handling (Minimalist version)
 const useCommandHandler = () => {
+  const baseUrl = import.meta.env.BASE_URL;
   const navigationCommands: Record<string, string> = {
-    'home': '/astro-portfolio/',
-    'about': '/astro-portfolio/about',
-    'projects': '/astro-portfolio/projects',
-    'connect': '/astro-portfolio/connect'
+    'home': baseUrl,
+    'about': `${baseUrl}about`,
+    'projects': `${baseUrl}projects`,
+    'connect': `${baseUrl}connect`
   };
 
   const handleCommand = (command: string): { type: 'navigate' | 'response', data: string[] | string } => {
@@ -68,11 +83,19 @@ const useCommandHandler = () => {
       case 'help':
         responses.push(
           'Available Commands:',
-          '─'.repeat(25),
-          '• home, about, projects, connect (Navigate to pages)',
-          '• clear                     (Clear terminal)',
-          '• sound                     (Toggle sound on/off)',
-          '• typing                    (Start typing test)'
+          '─'.repeat(40),
+          '',
+          '📍 Navigation:',
+          '  home, about, projects, connect',
+          '',
+          '🛠️  Utilities:',
+          '  clear    - Clear terminal',
+          '  sound    - Toggle sound on/off',
+          '  typing   - Start typing test',
+          '',
+          '🎮 Fun Commands:',
+          '  whoami, date, cowsay, joke,',
+          '  matrix, sudo, rm -rf, coffee, fortune'
         );
         break;
 
@@ -87,6 +110,132 @@ const useCommandHandler = () => {
       case 'typing':
         responses.push('typing');
         return { type: 'response', data: responses };
+
+      case 'whoami':
+        responses.push(
+          '👨‍💻 Dhananjay Dhawale',
+          '   Full-Stack Developer',
+          '   Spring Boot • Angular • React',
+          '   Chess enthusiast | Competitive programmer'
+        );
+        break;
+
+      case 'date':
+        const now = new Date();
+        responses.push(now.toString());
+        break;
+
+      case 'cowsay':
+        responses.push(
+          ' ________________________',
+          '< Moo! Code responsibly! >',
+          ' ------------------------',
+          '        \\   ^__^',
+          '         \\  (oo)\\_______',
+          '            (__)\\       )\\/\\',
+          '                ||----w |',
+          '                ||     ||'
+        );
+        break;
+
+      case 'joke':
+        const randomJoke = programmingJokes[Math.floor(Math.random() * programmingJokes.length)];
+        responses.push('🎭 ' + randomJoke);
+        break;
+
+      case 'matrix':
+        responses.push(
+          '⚠️  Wake up, Neo...',
+          '   The Matrix has you.',
+          '   Follow the white rabbit.',
+          '',
+          '   🐇 Knock, knock.'
+        );
+        break;
+
+      case 'sudo':
+        responses.push(
+          '🔐 Nice try! But you\'re not root here.',
+          '   This incident will be reported... just kidding! 😄'
+        );
+        break;
+
+      case 'rm -rf':
+      case 'rm -rf /':
+      case 'rm -rf /*':
+        responses.push(
+          '🚨 WHOA THERE!',
+          '   I see what you\'re trying to do...',
+          '   My portfolio survives another day! 💪',
+          '',
+          '   (No files were harmed in this command)'
+        );
+        break;
+
+      case 'coffee':
+        responses.push(
+          '    ( (',
+          '     ) )',
+          '   ........',
+          '   |      |]',
+          '   \\      /',
+          '    `----\'',
+          '',
+          '☕ Here\'s your mass: "COFFEE". Enjoy!'
+        );
+        break;
+
+      case 'fortune':
+        const fortunes = [
+          '🔮 You will mass a bug today... and mass it mysteriously disappear.',
+          '🔮 A Stack Overflow answer will save your day.',
+          '🔮 Your code will work on the first try. Just kidding, it never does.',
+          '🔮 Today is a good day to refactor that code you\'ve been avoiding.',
+          '🔮 You will mass an unexpected semicolon in your future.',
+          '🔮 The cloud is just someone else\'s computer.',
+        ];
+        responses.push(fortunes[Math.floor(Math.random() * fortunes.length)]);
+        break;
+
+      case 'ls':
+        responses.push(
+          'about.astro    connect.astro    index.astro    projects.astro',
+          'components/    layouts/         styles/'
+        );
+        break;
+
+      case 'pwd':
+        responses.push('/home/dhananjay/portfolio');
+        break;
+
+      case 'cat':
+        responses.push(
+          '🐱 Meow! Did you mean to read a file?',
+          '   Try: cat README.md (just kidding, this is a fake terminal)'
+        );
+        break;
+
+      case 'exit':
+      case 'quit':
+        responses.push(
+          '👋 Thanks for visiting!',
+          '   But you can\'t exit... this is a website!',
+          '   Feel free to close the tab though 😄'
+        );
+        break;
+
+      case 'neofetch':
+        responses.push(
+          '        ⣠⣤⣤⣤⣤⣤⣄⡀          dhananjay@portfolio',
+          '      ⣴⣿⡿⠛⠉⠙⠛⠛⠛⠛⠻⢿⣿⣷⣤⡀      -------------------',
+          '      ⣼⣿⠋            ⠈⢿⣿⡇      OS: Astro Linux',
+          '    ⢸⣿⡏              ⣿⣿⡇      Host: GitHub Pages',
+          '    ⣿⣿⡇              ⣿⣿⣇      Kernel: React 19',
+          '    ⢿⣿⣿⣷⣦⣀⣠⣴⣶⣦⣀⣴⣿⡿       Shell: Terminal.tsx',
+          '      ⠙⠿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠁        Theme: Night Sky',
+          '        ⠈⠉⠉⠉⠉⠉             Uptime: Always on'
+        );
+        break;
 
       default:
         responses.push(
@@ -178,7 +327,7 @@ const Terminal: React.FC = () => {
         // If currentSoundFile is not set, pick one randomly for the first time
         if (!audioPath) {
           const soundIndex = Math.floor(Math.random() * 7) + 1;
-          audioPath = `/public/audio/sound${soundIndex}.wav`;
+          audioPath = `${import.meta.env.BASE_URL}audio/sound${soundIndex}.wav`;
           setCurrentSoundFile(audioPath); // Set the new random sound as the current sound
         }
 
@@ -295,7 +444,7 @@ const Terminal: React.FC = () => {
 
     // Change sound randomly on every enter press
     const soundIndex = Math.floor(Math.random() * 7) + 1;
-    const newSoundPath = `/public/audio/sound${soundIndex}.wav`;
+    const newSoundPath = `${import.meta.env.BASE_URL}audio/sound${soundIndex}.wav`;
     setCurrentSoundFile(newSoundPath);
 
     playSound('enter');
@@ -370,18 +519,48 @@ const Terminal: React.FC = () => {
     
     if (typingTest.active) {
       // Handle typing test input
-      if (!typingTest.startTime && newValue.length > 0) {
-        setTypingTest(prev => ({ ...prev, startTime: Date.now() }));
+      const currentStartTime = typingTest.startTime || (newValue.length > 0 ? Date.now() : 0);
+
+      // Calculate WPM and accuracy
+      let wpm = 0;
+      let accuracy = 100;
+
+      if (currentStartTime && newValue.length > 0) {
+        const timeElapsed = (Date.now() - currentStartTime) / 1000 / 60; // minutes
+        const wordsTyped = newValue.length / 5; // Standard: 5 characters = 1 word
+        wpm = Math.round(wordsTyped / Math.max(timeElapsed, 0.01));
+
+        // Calculate accuracy
+        let correctChars = 0;
+        for (let i = 0; i < newValue.length; i++) {
+          if (newValue[i] === typingTest.sentence[i]) {
+            correctChars++;
+          }
+        }
+        accuracy = newValue.length > 0 ? Math.round((correctChars / newValue.length) * 100) : 100;
       }
-      
+
       // Check if test is completed
       if (newValue === typingTest.sentence) {
-        setTypingTest(prev => ({ ...prev, userInput: newValue, completed: true }));
+        setTypingTest(prev => ({
+          ...prev,
+          userInput: newValue,
+          startTime: currentStartTime,
+          wpm,
+          accuracy,
+          completed: true
+        }));
         setTimeout(() => endTypingTest(), 500);
         return;
       }
-      
-      setTypingTest(prev => ({ ...prev, userInput: newValue }));
+
+      setTypingTest(prev => ({
+        ...prev,
+        userInput: newValue,
+        startTime: currentStartTime,
+        wpm,
+        accuracy
+      }));
       if (newValue.length > input.length && !isTyping) {
         playSound('keypress');
       }
@@ -427,7 +606,11 @@ const Terminal: React.FC = () => {
       }
     } else if (e.key === 'Tab') {
       e.preventDefault();
-      const commands = ['help', 'home', 'about', 'projects', 'connect', 'clear', 'sound', 'typing'];
+      const commands = [
+        'help', 'home', 'about', 'projects', 'connect', 'clear', 'sound', 'typing',
+        'whoami', 'date', 'cowsay', 'joke', 'matrix', 'sudo', 'coffee', 'fortune',
+        'ls', 'pwd', 'cat', 'exit', 'quit', 'neofetch'
+      ];
       const matches = commands.filter(cmd => cmd.startsWith(input.toLowerCase()));
       if (matches.length === 1) {
         setInput(matches[0]);
@@ -505,11 +688,13 @@ const Terminal: React.FC = () => {
         <button
           onClick={toggleSound}
           className={`p-1 rounded text-sm transition-colors ${
-            soundEnabled 
-              ? 'text-green-400 hover:text-green-300' 
+            soundEnabled
+              ? 'text-green-400 hover:text-green-300'
               : 'text-gray-500 hover:text-gray-400'
           }`}
           title={`Sound ${soundEnabled ? 'enabled' : 'disabled'}`}
+          aria-label={`Toggle sound, currently ${soundEnabled ? 'enabled' : 'disabled'}`}
+          aria-pressed={soundEnabled}
         >
           {soundEnabled ? '🔊' : '🔇'}
         </button>

@@ -46,7 +46,8 @@ export default function Hero() {
           transition={{ delay: 1.0, duration: 0.5 }}
         >
           <a
-            href="/astro-portfolio/about"
+            href={`${import.meta.env.BASE_URL}about`}
+            aria-label="Learn more about me"
             className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full shadow-lg text-black bg-purple-400 hover:bg-purple-300 transform hover:scale-105 transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 focus:ring-offset-black"
           >
             Know More About Me
