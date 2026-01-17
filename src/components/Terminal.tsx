@@ -114,9 +114,13 @@ const useCommandHandler = () => {
       case 'whoami':
         responses.push(
           '👨‍💻 Dhananjay Dhawale',
-          '   Full-Stack Developer',
-          '   Spring Boot • Angular • React',
-          '   Chess enthusiast | Competitive programmer'
+          '   Software Development Engineer @ BNY Mellon',
+          '   Java • Spring Boot • Angular • React',
+          '',
+          '   🏆 LeetCode Guardian (2293) | CodeChef 5★ (2098)',
+          '   📊 4000+ DSA problems solved | 404-day streak',
+          '   ♟️  Lichess 2200+ | Chess enthusiast',
+          '   🎓 B.Tech from VNIT Nagpur'
         );
         break;
 
@@ -226,14 +230,14 @@ const useCommandHandler = () => {
 
       case 'neofetch':
         responses.push(
-          '        ⣠⣤⣤⣤⣤⣤⣄⡀          dhananjay@portfolio',
+          '        ⣠⣤⣤⣤⣤⣤⣄⡀          dhananjay@bny',
           '      ⣴⣿⡿⠛⠉⠙⠛⠛⠛⠛⠻⢿⣿⣷⣤⡀      -------------------',
-          '      ⣼⣿⠋            ⠈⢿⣿⡇      OS: Astro Linux',
-          '    ⢸⣿⡏              ⣿⣿⡇      Host: GitHub Pages',
-          '    ⣿⣿⡇              ⣿⣿⣇      Kernel: React 19',
-          '    ⢿⣿⣿⣷⣦⣀⣠⣴⣶⣦⣀⣴⣿⡿       Shell: Terminal.tsx',
-          '      ⠙⠿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠁        Theme: Night Sky',
-          '        ⠈⠉⠉⠉⠉⠉             Uptime: Always on'
+          '      ⣼⣿⠋            ⠈⢿⣿⡇      Role: SDE @ BNY Mellon',
+          '    ⢸⣿⡏              ⣿⣿⡇      Stack: Java • Spring Boot',
+          '    ⣿⣿⡇              ⣿⣿⣇      Frontend: Angular • React',
+          '    ⢿⣿⣿⣷⣦⣀⣠⣴⣶⣦⣀⣴⣿⡿       DSA: 4000+ problems',
+          '      ⠙⠿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠁        Chess: 2200+ Lichess',
+          '        ⠈⠉⠉⠉⠉⠉             Location: Pune, India'
         );
         break;
 

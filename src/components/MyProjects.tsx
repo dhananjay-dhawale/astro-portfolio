@@ -2,28 +2,35 @@ import React from 'react';
 import { motion, type Variants } from 'framer-motion';
 import { FaGithub } from 'react-icons/fa';
 
-// Placeholder data for projects
+// Project data
 const projects = [
   {
-    title: 'First Portfolio',
-    description: 'We all have watched angela yu web dev bootcamp, havent we? this is my first portfolio built using her course.',
-    technologies: ['Html', 'Css', 'Js'],
-    githubLink: 'https://github.com/dhananjay-dhawale/Portfolio',
-    demoLink: 'https://dhananjay-dhawale.github.io/Portfolio/'
+    title: 'Chess Analytics',
+    description: 'Full-stack chess analytics app to analyze PGN files from Chess.com and Lichess. Upload 10-30k games, view calendar heatmaps, and track win/loss/draw stats with filtering by time control, color, and account.',
+    technologies: ['Java 21', 'Spring Boot', 'React', 'TypeScript', 'SQLite'],
+    githubLink: 'https://github.com/dhananjay-dhawale/chess-analytics',
+    demoLink: 'https://chess-analytics-frontend.onrender.com/'
   },
   {
-    title: 'Chess Heat Map',
-    description: 'Personal project which i have been trying to build for a long time, hopefully it will be done soon.',
-    technologies: ['Java', 'Spring Boot', 'Angular'],
-    githubLink: 'https://github.com/dhananjay-dhawale/react-chess-heatmap',
-    demoLink: 'https://dhananjay-dhawale.github.io/react-chess-heatmap/'
+    title: 'Twitter Voice Notes Extension',
+    description: 'Chrome extension adding WhatsApp-style voice messaging to Twitter DMs. Features real-time waveform visualization, 0.5s processing time (40x faster than typical), and seamless native UI integration.',
+    technologies: ['JavaScript', 'Chrome APIs', 'Web Audio API', 'Canvas'],
+    githubLink: 'https://github.com/dhananjay-dhawale/twitter-voice-note-extension',
+    demoLink: 'https://github.com/dhananjay-dhawale/twitter-voice-note-extension'
   },
   {
     title: 'CP Templates',
-    description: 'Project includes various templates for competitive programming, which can be used to solve problems quickly.',
-    technologies: ['C++'],
+    description: 'Collection of optimized competitive programming templates used to solve 4000+ DSA problems. Includes data structures, algorithms, and commonly used code snippets.',
+    technologies: ['C++', 'Algorithms', 'Data Structures'],
     githubLink: 'https://github.com/dhananjay-dhawale/CP-templates',
     demoLink: 'https://github.com/dhananjay-dhawale/CP-templates'
+  },
+  {
+    title: 'Portfolio Website',
+    description: 'This portfolio! Built with Astro and React featuring an interactive terminal, live GitHub/Lichess stats, animated skill visualizations, and experience timeline.',
+    technologies: ['Astro', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
+    githubLink: 'https://github.com/dhananjay-dhawale/astro-portfolio',
+    demoLink: 'https://dhananjay-dhawale.github.io/astro-portfolio/'
   }
 ];
 

@@ -32,19 +32,19 @@ const itemVariants: Variants = {
 // Structured skills data for a more organized display
 const skillData = {
   'Programming Languages': ['Java', 'C', 'C++', 'Python', 'SQL'],
-  'Frameworks/Libraries': ['Spring Boot', 'JUnit', 'Mockito', 'Postman', 'Insomnia', 'Hazelcast', 'React', 'Angular', 'Tailwind CSS'],
-  'Database/DevOps': ['MySQL', 'MongoDB', 'Git', 'GitLab', 'Docker', 'Splunk', 'AWS'],
-  'Concepts': ['OOPs', 'DSA', 'OS', 'CN', 'System Design', 'Agile Methodologies', 'Software Development Life Cycle (SDLC)'],
-  'AI/ML': ['Computer Vision', 'Machine Learning', 'Large Language Models (LLMs)', 'Prompt Engineering'],
+  'Frameworks & Libraries': ['Spring Boot', 'JUnit', 'Mockito', 'Hazelcast', 'Angular', 'React', 'Tailwind CSS'],
+  'Database & DevOps': ['MySQL', 'MongoDB', 'Git', 'GitLab', 'Docker', 'Splunk', 'Postman', 'Insomnia'],
+  'Core Concepts': ['OOPs', 'DSA', 'OS', 'CN', 'System Design', 'Agile/SCRUM', 'SDLC', 'Unit Testing', 'Code Review'],
+  'AI/ML': ['Computer Vision', 'YOLO v8', 'Machine Learning', 'LLMs', 'Prompt Engineering'],
 };
 
 // Updated interests data with icons
 const interests = [
-  { name: 'Writing technical blogs on Medium', icon: FaBlog },
-  { name: 'Chess, Badminton, and Piano', icon: FaChessPawn },
-  { name: 'Cycling, Dancing, and Photography', icon: FaCamera },
-  { name: 'Reading and listening to classical music', icon: FaMusic },
-  { name: 'Exploring cutting-edge AI/ML advancements', icon: FaMicrophoneAlt },
+  { name: 'Writing technical blogs on Medium & X threads', icon: FaBlog },
+  { name: 'Chess (2200+ Lichess), Badminton & Piano', icon: FaChessPawn },
+  { name: 'President of Cyclists of VNIT, Photography', icon: FaCamera },
+  { name: 'Reading, Classical Music & Anime', icon: FaMusic },
+  { name: 'Exploring AI/ML & Large Language Models', icon: FaMicrophoneAlt },
 ];
 
 export default function AboutMe() {
@@ -67,21 +67,21 @@ export default function AboutMe() {
             className="text-4xl sm:text-5xl font-bold text-purple-300 drop-shadow-[0_2px_6px_rgba(186,147,255,0.4)]"
             variants={itemVariants}
           >
-            Full-Stack Developer
+            Software Development Engineer
           </motion.h1>
 
           <motion.p
             className="text-lg text-gray-200 leading-relaxed"
             variants={itemVariants}
           >
-            I'm a passionate software developer who loves building clean backends and smooth user experiences. I currently work with <strong>Spring Boot</strong> and <strong>Angular</strong>, and I'm always exploring new tools and frameworks to push my limits.
+            I'm a Software Developer at <strong>BNY Mellon</strong> with 2+ years of experience building robust web applications using <strong>Java Spring Boot</strong> and <strong>Angular</strong>. I've led critical migrations, optimized system performance by 15-20%, and developed 10+ APIs during hackathons.
           </motion.p>
 
           <motion.p
             className="text-lg text-gray-200 leading-relaxed"
             variants={itemVariants}
           >
-            My background in <strong>competitive programming</strong> sharpens how I approach code—focusing on logic, performance, and clarity. Beyond code, you'll find me experimenting with frameworks like <strong>Astro</strong> and <strong>React</strong>, or playing a game of chess to stay sharp.
+            I'm a <strong>Guardian on LeetCode</strong> (top 0.7%), <strong>5★ on CodeChef</strong>, and have solved <strong>4000+ DSA problems</strong> with a 404-day streak. Previously mentored students on DSA at VNIT and served as President of Cyclists of VNIT.
           </motion.p>
           
           {/* Skills with a custom stagger animation */}
