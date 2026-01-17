@@ -71,13 +71,13 @@ const ImageCard: React.FC<ImageCardProps> = ({ src, alt, title, icon }) => {
 };
 
 export default function GitHubStats({ username = 'dhananjay-dhawale' }: GitHubStatsProps) {
-  // Using github-profile-summary-cards (more reliable than github-readme-stats)
+  // Using github-profile-summary-cards (reliable service)
   const profileDetailsUrl = `https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=${username}&theme=tokyonight`;
   const statsUrl = `https://github-profile-summary-cards.vercel.app/api/cards/stats?username=${username}&theme=tokyonight`;
   const languagesUrl = `https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=${username}&theme=tokyonight`;
-  const languageCommitsUrl = `https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=${username}&theme=tokyonight`;
-  // Streak stats (using demolab - more reliable)
-  const streakUrl = `https://streak-stats.demolab.com/?user=${username}&theme=tokyonight&hide_border=true&background=00000000&ring=a78bfa&fire=a78bfa&currStreakLabel=a78bfa`;
+  const productiveTimeUrl = `https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=${username}&theme=tokyonight&utcOffset=5.5`;
+  // Streak stats (using vercel deployment - more reliable)
+  const streakUrl = `https://github-readme-streak-stats-nine-alpha.vercel.app/?user=${username}&theme=tokyonight&hide_border=true&background=00000000&ring=a78bfa&fire=a78bfa&currStreakLabel=a78bfa`;
 
   return (
     <motion.section
@@ -118,7 +118,7 @@ export default function GitHubStats({ username = 'dhananjay-dhawale' }: GitHubSt
         </div>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Stats Card */}
         <motion.div className="flex justify-center" variants={itemVariants}>
           <ImageCard
@@ -129,23 +129,33 @@ export default function GitHubStats({ username = 'dhananjay-dhawale' }: GitHubSt
           />
         </motion.div>
 
-        {/* Streak Card */}
-        <motion.div className="flex justify-center" variants={itemVariants}>
-          <ImageCard
-            src={streakUrl}
-            alt="GitHub contribution streak"
-            title="Streak"
-            icon={<FaFire className="w-4 h-4" />}
-          />
-        </motion.div>
-
         {/* Languages by Repo */}
         <motion.div className="flex justify-center" variants={itemVariants}>
           <ImageCard
             src={languagesUrl}
             alt="Languages by repository"
-            title="Languages (Repos)"
+            title="Top Languages"
             icon={<FaCode className="w-4 h-4" />}
+          />
+        </motion.div>
+
+        {/* Streak Card */}
+        <motion.div className="flex justify-center" variants={itemVariants}>
+          <ImageCard
+            src={streakUrl}
+            alt="GitHub contribution streak"
+            title="Contribution Streak"
+            icon={<FaFire className="w-4 h-4" />}
+          />
+        </motion.div>
+
+        {/* Productive Time */}
+        <motion.div className="flex justify-center" variants={itemVariants}>
+          <ImageCard
+            src={productiveTimeUrl}
+            alt="Most productive coding hours"
+            title="Productive Time"
+            icon={<FaStar className="w-4 h-4" />}
           />
         </motion.div>
       </div>
