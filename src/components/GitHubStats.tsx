@@ -71,17 +71,12 @@ const ImageCard: React.FC<ImageCardProps> = ({ src, alt, title, icon }) => {
 };
 
 export default function GitHubStats({ username = 'dhananjay-dhawale' }: GitHubStatsProps) {
-  // Using github-profile-summary-cards (reliable service)
+  // Using only profile-details card (most reliable)
   const profileDetailsUrl = `https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=${username}&theme=tokyonight`;
-  const statsUrl = `https://github-profile-summary-cards.vercel.app/api/cards/stats?username=${username}&theme=tokyonight`;
-  const languagesUrl = `https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=${username}&theme=tokyonight`;
-  const productiveTimeUrl = `https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=${username}&theme=tokyonight&utcOffset=5.5`;
-  // Streak stats (using vercel deployment - more reliable)
-  const streakUrl = `https://github-readme-streak-stats-nine-alpha.vercel.app/?user=${username}&theme=tokyonight&hide_border=true&background=00000000&ring=a78bfa&fire=a78bfa&currStreakLabel=a78bfa`;
 
   return (
     <motion.section
-      className="py-16 px-6 max-w-6xl mx-auto"
+      className="py-16 px-6 max-w-4xl mx-auto"
       variants={containerVariants}
       initial="hidden"
       whileInView="show"
@@ -96,69 +91,23 @@ export default function GitHubStats({ username = 'dhananjay-dhawale' }: GitHubSt
       </motion.h2>
 
       <motion.p
-        className="text-center text-gray-400 mb-12"
+        className="text-center text-gray-400 mb-8"
         variants={itemVariants}
       >
         My open source contributions and coding activity
       </motion.p>
 
       {/* Profile Details - Full Width */}
-      <motion.div className="flex justify-center mb-8" variants={itemVariants}>
-        <div className="p-4 rounded-xl border border-white/20 bg-white/5 backdrop-blur-sm hover:border-purple-500 transition-all duration-300 w-full max-w-3xl">
-          <div className="flex items-center gap-2 mb-3 text-purple-300">
-            <FaStar className="w-4 h-4" />
-            <span className="font-semibold">Profile Overview</span>
-          </div>
+      <motion.div className="flex justify-center" variants={itemVariants}>
+        <div className="p-4 rounded-xl border border-white/20 bg-white/5 backdrop-blur-sm hover:border-purple-500 transition-all duration-300 w-full">
           <img
             src={profileDetailsUrl}
-            alt="GitHub profile details and contribution graph"
+            alt="GitHub profile overview with contribution graph"
             className="w-full"
             loading="lazy"
           />
         </div>
       </motion.div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Stats Card */}
-        <motion.div className="flex justify-center" variants={itemVariants}>
-          <ImageCard
-            src={statsUrl}
-            alt="GitHub Stats showing commits, PRs, issues and contributions"
-            title="Stats"
-            icon={<FaStar className="w-4 h-4" />}
-          />
-        </motion.div>
-
-        {/* Languages by Repo */}
-        <motion.div className="flex justify-center" variants={itemVariants}>
-          <ImageCard
-            src={languagesUrl}
-            alt="Languages by repository"
-            title="Top Languages"
-            icon={<FaCode className="w-4 h-4" />}
-          />
-        </motion.div>
-
-        {/* Streak Card */}
-        <motion.div className="flex justify-center" variants={itemVariants}>
-          <ImageCard
-            src={streakUrl}
-            alt="GitHub contribution streak"
-            title="Contribution Streak"
-            icon={<FaFire className="w-4 h-4" />}
-          />
-        </motion.div>
-
-        {/* Productive Time */}
-        <motion.div className="flex justify-center" variants={itemVariants}>
-          <ImageCard
-            src={productiveTimeUrl}
-            alt="Most productive coding hours"
-            title="Productive Time"
-            icon={<FaStar className="w-4 h-4" />}
-          />
-        </motion.div>
-      </div>
 
       {/* GitHub Profile Link */}
       <motion.div className="mt-8 text-center" variants={itemVariants}>
