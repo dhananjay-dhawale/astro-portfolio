@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AboutMe from '../components/AboutMe.tsx';
-import AnimatedSkillBars from '../components/AnimatedSkillBars.tsx';
 import ExperienceTimeline from '../components/ExperienceTimeline.tsx';
 import GitHubStats from '../components/GitHubStats.tsx';
 import LichessStats from '../components/LichessStats.tsx';
@@ -13,7 +12,6 @@ import StarBackground from '../components/StarBackground.tsx';
     <StarBackground client:load />
     <div class="relative z-10">
       <AboutMe client:load />
-      <AnimatedSkillBars client:visible />
       <ExperienceTimeline client:visible />
       <GitHubStats client:visible />
       <LichessStats client:load />
